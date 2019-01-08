@@ -1,13 +1,24 @@
 class MtxMatrix {
-public:
+private:
   int M; // number of rows
   int N; // number of columns
   int L; // number of nonzeros
-  double* data; // matrix data
+  long double* data; // nonzero values from the matrix
+  int* col; // indices associated with the first entry of each column
+  int* row; // indices associated with the row of nonzero
 
-  // takes (M, N) and creates a filled matrix with 0s
-  MtxMatrix (int,int);
+public:
+  // getters
+  int getM();
+  int getN();
+  int getL();
+  int* getColArr();
+  int* getRowArr();
+  long double getDataAt(int);
 
-  // takes (M, N) and creates a filled matrix with the given thrid arg
-  MtxMatrix (int, int, double);
+  // setters
+  void setDataAt(int, long double);
+
+  // reads a file
+  void readMtxData(std::string);
 };

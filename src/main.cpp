@@ -1,10 +1,9 @@
 // my first program in C++
 #include <iostream>
 #include <omp.h>
-#include "mtx_reader.cpp"
+
 #include "mtx_vector.cpp"
 #include "mtx_matrix.cpp"
-
 
 void simple(int n, float *a, float *b) {
   int i;
@@ -16,18 +15,19 @@ void simple(int n, float *a, float *b) {
 
 int main()
 {
-  MtxReader<MtxVector> mr;
-
   std::string filePath = "../data/af_0_k101_b.mtx";
-  MtxVector V = mr.readMtxData(filePath, false);
+  MtxVector v;
+  v.readMtxData(filePath);
 
-  // make 20 a configurable value
-  std::cout << std::setprecision(20);
-  std::cout << V.getM() << nl
-            << V.getDataAt(5);
-  // #pragma omp parallel
-  // {
-  //   cout << "Hello ";
-  //   cout << "World!\n";
-  // }
+  std::cout << v.getM() << std::endl
+            << v.getDataAt(5) << std::endl;
+
+  MtxMatrix m;
+
+  filePath = "../data/af_0_k101.mtx";
+  m.readMtxData(filePath);
+
+  std::cout << "M=" << m.getM() << ", N=" << m.getN() << ", L=" << m.getL() << std::endl;
+
+  return 0;
 }
