@@ -8,6 +8,14 @@ template <class T> int MtxMatrix<T>::getN() { return this->N; }
 
 template <class T> int MtxMatrix<T>::getNZ() { return this->NZ; }
 
+template <class T> int *MtxMatrix<T>::getLi() { return this->Li; }
+
+template <class T> int *MtxMatrix<T>::getLp() { return this->Lp; }
+
+template <class T> T *MtxMatrix<T>::getLx() { return this->Lx; }
+
+template <class T> T MtxMatrix<T>::operator[](int idx) { return this->Lx[idx]; }
+
 template <class T> T MtxMatrix<T>::getDataAt(int idx) { return this->Lx[idx]; }
 
 template <class T> void MtxMatrix<T>::setDataAt(int idx, T value) {

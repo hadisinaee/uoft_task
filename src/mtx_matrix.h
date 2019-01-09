@@ -11,9 +11,10 @@ private:
 public:
   // reads a file of .mtx
   void readMtxData(std::string);
-
   // checks for emptiness of Lx
   bool isEmpty();
+  // overload operator [] for Lx
+  T operator[](int);
 
   // getter(s)
   int getM();
@@ -21,7 +22,7 @@ public:
   int getNZ();
   int *getLp();
   int *getLi();
-  int *getLx();
+  T *getLx();
   T getDataAt(int);
 
   // setter(s)
