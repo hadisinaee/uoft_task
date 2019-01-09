@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <fstream>
 
-template <class T> int MtxVector<T>::getM() { return this->M; }
+template <class T> int MtxVector<T>::getLength() { return this->length; }
 
 template <class T> void MtxVector<T>::setDataAt(int idx, T value) {
   this->data[idx] = value;
@@ -22,10 +22,10 @@ template <class T> void MtxVector<T>::readMtxData(std::string filePath) {
     fin.ignore(2048, '\n');
 
   // read in dimension of vector
-  fin >> this->M >> c;
+  fin >> this->length >> c;
 
   // create the vector values
-  this->data = new T[M];
+  this->data = new T[this->length];
 
   // read the the vector data
   T input = 0;

@@ -1,7 +1,7 @@
 template <class T> class MtxVector {
 private:
-  int M;   // number of rows
-  T *data; // matrix data
+  int length; // number of rows, i.e length of the array
+  T *data;    // matrix data
 
 public:
   // read file from .mtx
@@ -12,7 +12,7 @@ public:
   T operator[](int);
 
   // getter(s)
-  int getM();
+  int getLength();
   T getDataAt(int);
 
   // setter(s)
