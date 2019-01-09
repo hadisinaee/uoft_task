@@ -1,78 +1,67 @@
 #include "mtx_matrix.h"
-#include <fstream>
 #include <algorithm>
+#include <fstream>
 
-template <class T>
-int MtxMatrix<T>::getM() {
-  return this->M;
+template <class T> int MtxMatrix<T>::getM() { return this->M; }
+
+template <class T> int MtxMatrix<T>::getN() { return this->N; }
+
+template <class T> int MtxMatrix<T>::getNZ() { return this->NZ; }
+
+template <class T> T MtxMatrix<T>::getDataAt(int idx) { return this->Lx[idx]; }
+
+template <class T> void MtxMatrix<T>::setDataAt(int idx, T value) {
+  this->Lx[idx] = value;
 }
 
-template <class T>
-int MtxMatrix<T>::getN() {
-  return this->N;
-}
-
-template <class T>
-int MtxMatrix<T>::getL() {
-  return this->L;
-}
-template <class T>
-T MtxMatrix<T>::getDataAt(int idx) {
-  return this->data[idx];
-}
-
-template <class T>
-void MtxMatrix<T>::setDataAt(int idx, T value) {
-  this->data[idx] = value;
-}
-
-template <class T>
-void MtxMatrix<T>::readMtxData(std::string filePath) {
+template <class T> void MtxMatrix<T>::readMtxData(std::string filePath) {
   // open the file
   std::ifstream fin(filePath);
 
   // ignore headers and comments
-  while (fin.peek() == '%') fin.ignore(2048, '\n');
+  while (fin.peek() == '%')
+    fin.ignore(2048, '\n');
 
-  fin >> this->M >> this->N >> this->L;
+  fin >> this->M >> this->N >> this->NZ;
 
-  this->data = new long double[L];
-  this->col = new int[L+1];
-  this->row = new int[L];
+  this->Lx = new long double[this->NZ];
+  this->Lp = new int[this->NZ + 1];
+  this->Li = new int[this->NZ];
 
-  this->col[0] = 0;
-  this->col[1] = 0;
+  this->Lp[0] = 0;
+  this->Lp[1] = 0;
 
   int m, n, idx;
   long double data;
   // read the data
-  for (int l = 0, pn = 1; l < L; l++)
-  {
-    fin >> this->row[l] >> n >> this->data[l];
-    if (n-pn == 0) { // if on the same column
-      this->col[pn]++;
+  for (int l = 0, pn = 1; l < this->NZ; l++) {
+    fin >> this->Li[l] >> n >> this->Lx[l];
+    if (n - pn == 0) { // if on the same column
+      this->Lp[pn]++;
     } else {
-      this->col[n] = this->col[pn] + 1;
+      this->Lp[n] = this->Lp[pn] + 1;
       pn = n;
     }
   }
 
   // std::cout << "COL: ";
   // for(int i=0; i<5; i++){
-  //   std::cout << this->col[i] << " ";
+  //   std::cout << this->Lp[i] << " ";
   // }
   //
   // std::cout << std::endl << "ROW: ";
   // for(int i=0; i<20; i++){
-  //   std::cout << this->row[i] << " ";
+  //   std::cout << this->Li[i] << " ";
   // }
   //
   // std::cout << std::endl << "DATA: ";
   // for(int i=0; i<20; i++){
-  //   std::cout << this->data[i] << " ";
+  //   std::cout << this->Lx[i] << " ";
   // }
   //
   // std::cout << std::endl;
 
   fin.close();
 }
+
+template <class T> bool MtxMatrix<T>::isEmpty() { return !this->Lx; }

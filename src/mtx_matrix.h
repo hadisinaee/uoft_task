@@ -1,25 +1,29 @@
-template <class T>
-class MtxMatrix {
+template <class T> class MtxMatrix {
 private:
-  int M; // number of rows
-  int N; // number of columns
-  int L; // number of nonzeros
-  T* data; // nonzero values from the matrix
-  int* col; // indices associated with the first entry of each column
-  int* row; // indices associated with the row of nonzero
+  int M;  // number of rows
+  int N;  // number of columns
+  int NZ; // number of nonzeros
+
+  T *Lx;   // row values; nonzero values from the matrix
+  int *Lp; // coloumn pointer; indices associated with the first entry in column
+  int *Li; // row index; indices associated with the row of nonzero
 
 public:
-  // getters
+  // reads a file of .mtx
+  void readMtxData(std::string);
+
+  // checks for emptiness of Lx
+  bool isEmpty();
+
+  // getter(s)
   int getM();
   int getN();
-  int getL();
-  int* getColArr();
-  int* getRowArr();
+  int getNZ();
+  int *getLp();
+  int *getLi();
+  int *getLx();
   T getDataAt(int);
 
-  // setters
+  // setter(s)
   void setDataAt(int, T);
-
-  // reads a file
-  void readMtxData(std::string);
 };
