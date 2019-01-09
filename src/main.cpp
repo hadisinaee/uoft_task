@@ -13,21 +13,23 @@ void simple(int n, float *a, float *b) {
   }
 }
 
+// TODO: add argc
 int main()
 {
   std::string filePath = "../data/af_0_k101_b.mtx";
-  MtxVector v;
+  MtxVector<long double> v;
   v.readMtxData(filePath);
 
-  std::cout << v.getM() << std::endl
-            << v.getDataAt(5) << std::endl;
+  std::cout << "Vector:" << std::endl
+            << "#Rows=" << v.getM() << std::endl;
 
-  MtxMatrix m;
+  MtxMatrix<long double> m;
 
   filePath = "../data/af_0_k101.mtx";
   m.readMtxData(filePath);
 
-  std::cout << "M=" << m.getM() << ", N=" << m.getN() << ", L=" << m.getL() << std::endl;
+  std::cout << "Matrix:" << std::endl
+            << "#Rows=" << m.getM() << ", #Columns=" << m.getN() << ", #NonZeros=" << m.getL() << std::endl;
 
   return 0;
 }

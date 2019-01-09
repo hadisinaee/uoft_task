@@ -2,19 +2,23 @@
 #include <fstream>
 #include <algorithm>
 
-int MtxVector::getM() {
+template <class T>
+int MtxVector<T>::getM() {
   return this->M;
 }
 
-void MtxVector::setDataAt(int idx, long double value) {
+template <class T>
+void MtxVector<T>::setDataAt(int idx, T value) {
   this->data[idx] = value;
 }
 
-double MtxVector::getDataAt(int idx) {
+template <class T>
+T MtxVector<T>::getDataAt(int idx) {
   return this->data[idx];
 }
 
-void MtxVector::readMtxData(std::string filePath) {
+template <class T>
+void MtxVector<T>::readMtxData(std::string filePath) {
   int c;
   // open the file
   std::ifstream fin(filePath);

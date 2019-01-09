@@ -2,27 +2,32 @@
 #include <fstream>
 #include <algorithm>
 
-int MtxMatrix::getM() {
+template <class T>
+int MtxMatrix<T>::getM() {
   return this->M;
 }
 
-int MtxMatrix::getN() {
+template <class T>
+int MtxMatrix<T>::getN() {
   return this->N;
 }
 
-int MtxMatrix::getL() {
+template <class T>
+int MtxMatrix<T>::getL() {
   return this->L;
 }
-
-long double MtxMatrix::getDataAt(int idx) {
+template <class T>
+T MtxMatrix<T>::getDataAt(int idx) {
   return this->data[idx];
 }
 
-void MtxMatrix::setDataAt(int idx, long double value) {
+template <class T>
+void MtxMatrix<T>::setDataAt(int idx, T value) {
   this->data[idx] = value;
 }
 
-void MtxMatrix::readMtxData(std::string filePath) {
+template <class T>
+void MtxMatrix<T>::readMtxData(std::string filePath) {
   // open the file
   std::ifstream fin(filePath);
 
@@ -41,7 +46,7 @@ void MtxMatrix::readMtxData(std::string filePath) {
   int m, n, idx;
   long double data;
   // read the data
-  for (int l = 0, pn = 1; l < 30; l++)
+  for (int l = 0, pn = 1; l < L; l++)
   {
     fin >> this->row[l] >> n >> this->data[l];
     if (n-pn == 0) { // if on the same column
@@ -68,6 +73,6 @@ void MtxMatrix::readMtxData(std::string filePath) {
   // }
   //
   // std::cout << std::endl;
-  
+
   fin.close();
 }
