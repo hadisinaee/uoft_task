@@ -15,8 +15,10 @@ public:
   void readMtxData(std::string);
   // checks for emptiness of Lx
   bool isEmpty();
-  // get a column array
-  std::list<T> *getColumn(int);
+  // get a column array of a column
+  std::list<T> *getColumn(const int);
+  // get row indices of nonzeros of a column
+  std::list<int> *getNonZeroRowIndices(const int);
   // overload operator [] for Lx
   T operator[](int);
 
