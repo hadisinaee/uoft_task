@@ -1,6 +1,7 @@
 #include "mtx_matrix.h"
 #include <algorithm>
 #include <fstream>
+#include <list>
 
 template <class T> int MtxMatrix<T>::getM() { return this->M; }
 
@@ -73,3 +74,19 @@ template <class T> void MtxMatrix<T>::readMtxData(std::string filePath) {
 }
 
 template <class T> bool MtxMatrix<T>::isEmpty() { return !this->Lx; }
+
+template <class T> std::list<T> *MtxMatrix<T>::getColumn(const int idx) {
+  // computing the length of the column
+  int columnLength = this->Lp[idx] - this->Lp[idx - 1];
+
+  // creating a list of column data with the computed length of the given index
+  std::list<T> *columnList = new std::list<T>[columnLength];
+
+  // iterating over nonzero data of the given index column
+  // saving them inside a list
+  for (int i = this->Lp[idx - 1]; i < this->Lp[idx]; i++) {
+    columnList->push_back(this->Lx[i]);
+  }
+
+  return columnList;
+}

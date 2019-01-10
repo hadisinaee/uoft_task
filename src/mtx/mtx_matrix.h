@@ -1,3 +1,5 @@
+#include <list>
+
 template <class T> class MtxMatrix {
 private:
   int M;  // number of rows
@@ -13,6 +15,8 @@ public:
   void readMtxData(std::string);
   // checks for emptiness of Lx
   bool isEmpty();
+  // get a column array
+  std::list<T> *getColumn(int);
   // overload operator [] for Lx
   T operator[](int);
 
