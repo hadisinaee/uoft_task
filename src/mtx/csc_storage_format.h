@@ -1,7 +1,7 @@
 #ifndef STORAGE_FORMAT_H
 #define STORAGE_FORMAT_H
 
-#include "mtx.h"
+#include "base_storage_format.h"
 #include <list>
 
 template <typename DataType> class CSCStorageFormat : StorageFormat<DataType> {
