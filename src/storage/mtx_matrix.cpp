@@ -3,7 +3,7 @@
 #include <fstream>
 #include <list>
 
-template <class DataType>
+template <typename DataType>
 void MtxMatrix<DataType>::readDataFrom(std::string filePath) {
   // open the file
   std::ifstream fin(filePath);
@@ -63,19 +63,19 @@ void MtxMatrix<DataType>::readDataFrom(std::string filePath) {
   fin.close();
 }
 
-template <class DataType> Dimension *MtxMatrix<DataType>::getDimension() {
+template <typename DataType> Dimension *MtxMatrix<DataType>::getDimension() {
   return &this->dim;
 }
 
-template <class DataType> void MtxMatrix<DataType>::save(std::string path) {
+template <typename DataType> void MtxMatrix<DataType>::save(std::string path) {
   return;
 }
 
-template <class DataType> bool MtxMatrix<DataType>::isEmpty() {
+template <typename DataType> bool MtxMatrix<DataType>::isEmpty() {
   return !this->Lx;
 }
 
-template <class DataType>
+template <typename DataType>
 std::list<DataType> *MtxMatrix<DataType>::getColumn(const int idx) {
   // computing the length of the column
   int columnLength = this->Lp[idx] - this->Lp[idx - 1];
@@ -92,16 +92,16 @@ std::list<DataType> *MtxMatrix<DataType>::getColumn(const int idx) {
   return columnList;
 }
 
-template <class DataType> DataType MtxMatrix<DataType>::getDataAt(int idx) {
+template <typename DataType> DataType MtxMatrix<DataType>::getDataAt(int idx) {
   return this->Lx[idx];
 }
 
-template <class DataType>
+template <typename DataType>
 void MtxMatrix<DataType>::setDataAt(int idx, DataType value) {
   this->Lx[idx] = value;
 }
 
-template <class DataType>
+template <typename DataType>
 std::list<int> *MtxMatrix<DataType>::getNoneZeroRowIndices(const int idx) {
   // computing the length of the column
   int columnLength = this->Lp[idx] - this->Lp[idx - 1];
@@ -118,6 +118,6 @@ std::list<int> *MtxMatrix<DataType>::getNoneZeroRowIndices(const int idx) {
   return rowIndicesList;
 }
 
-template <class DataType> DataType MtxMatrix<DataType>::operator[](int idx) {
+template <typename DataType> DataType MtxMatrix<DataType>::operator[](int idx) {
   return this->Lx[idx];
 }
