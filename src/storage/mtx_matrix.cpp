@@ -121,3 +121,10 @@ std::list<int> *MtxMatrix<DataType>::getNoneZeroRowIndices(const int idx) {
 template <typename DataType> DataType MtxMatrix<DataType>::operator[](int idx) {
   return this->Lx[idx];
 }
+
+template <typename DataType> int *MtxMatrix<DataType>::getLp() {
+  return this->Lp;
+}
+template <typename DataType> int *MtxMatrix<DataType>::getLi() {
+  return this->Li;
+}

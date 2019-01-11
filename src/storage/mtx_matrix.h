@@ -24,6 +24,10 @@ public:
   std::list<int> *getNoneZeroRowIndices(const int);
   // returns the value at the given index
   DataType operator[](int);
+  // getter of column pointer array
+  int *getLp();
+  // getter of indicies array
+  int *getLi();
 
 private:
   // information about the matrix
