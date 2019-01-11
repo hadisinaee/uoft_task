@@ -1,3 +1,6 @@
+#ifndef MTX_VECTOR_H
+#define MTX_VECTOR_H
+
 #include "csc_storage_format.h"
 #include <list>
 
@@ -36,3 +39,5 @@ private:
   // a list of nonzeros indicies
   std::list<int> *nzRowIndices;
 };
+
+#endif

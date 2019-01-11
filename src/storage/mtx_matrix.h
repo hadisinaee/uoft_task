@@ -1,3 +1,6 @@
+#ifndef MTX_MATRIX_H
+#define MTX_MATRIX_H
+
 #include "csc_storage_format.h"
 #include <list>
 
@@ -32,3 +35,5 @@ private:
   // row index; indices associated with the row of nonzero
   int *Li;
 };
+
+#endif
