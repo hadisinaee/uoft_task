@@ -1,3 +1,6 @@
+#ifndef MTX_H
+#define MTX_H
+
 #include <list>
 
 class Dimension {
@@ -22,3 +25,5 @@ public:
   virtual Dimension *getDimension() = 0;
   virtual void save(std::string) = 0;
 };
+
+#endif
