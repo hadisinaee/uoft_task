@@ -2,12 +2,6 @@
 #include <list>
 
 template <class DataType> class MtxMatrix : CSCStorageFormat<DataType> {
-private:
-  Dimension dim; // information about the matrix
-  DataType *Lx;  // row values; nonzero values from the matrix
-  int *Lp; // coloumn pointer; indices associated with the first entry in column
-  int *Li; // row index; indices associated with the row of nonzero
-
 public:
   // reads a file of .mtx
   void readDataFrom(std::string);
@@ -27,4 +21,14 @@ public:
   std::list<int> *getNoneZeroRowIndices(const int);
   // returns the value at the given index
   DataType operator[](int);
+
+private:
+  // information about the matrix
+  Dimension dim;
+  // row values; nonzero values from the matrix
+  DataType *Lx;
+  // coloumn pointer; indices associated with the first entry in column
+  int *Lp;
+  // row index; indices associated with the row of nonzero
+  int *Li;
 };
