@@ -4,6 +4,10 @@
 #include "csc_storage_format.h"
 #include <list>
 
+/**
+ * MtxMatrix is an implementation of CSCStorageFormat abstract class
+ * representing CSC format for a matrix.
+ */
 template <class DataType> class MtxMatrix : CSCStorageFormat<DataType> {
 public:
   // reads a file of .mtx
@@ -11,7 +15,7 @@ public:
   // returns dimension of the vector(n*1)
   Dimension *getDimension();
   // saves the data in the given path
-  void save(std::string);
+  void save(std::string, std::string);
   // checks for emptiness of Lx
   bool isEmpty();
   // get a column array of a column

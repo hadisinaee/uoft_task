@@ -1,40 +1,103 @@
-// my first program in C++
 #include <iostream>
 #include <omp.h>
 
-#include "mtx_matrix.cpp"
-#include "mtx_vector.cpp"
-#include "solver.cpp"
+#include "solver/simple_solver.cpp"
+#include "solver/sparse_solver.cpp"
+#include "storage/mtx_matrix.cpp"
+#include "storage/mtx_vector.cpp"
 
-void simple(int n, float *a, float *b) {
-  int i;
-#pragma omp parallel for
-  for (int i = 0; i < n; i++) {
-    b[i] = (a[i] + a[i - 1]) / 2.0;
+// void simple(int n, float *a, float *b) {
+//   int i;
+// #pragma omp parallel for
+//   for (int i = 0; i < n; i++) {
+//     b[i] = (a[i] + a[i - 1]) / 2.0;
+//   }
+// }
+
+int main(int argc, char **argv) {
+  std::string vectorPath, matrixPath, outputPath, algorithmType;
+  for (int i = 1; i < argc; i += 2) {
+    if (strcmp(argv[i], "-v") == 0 && i + 1 < argc) {
+      vectorPath = argv[i + 1];
+    } else if (strcmp(argv[i], "-m") == 0 && i + 1 < argc) {
+      matrixPath = argv[i + 1];
+    } else if (strcmp(argv[i], "-o") == 0 && i + 1 < argc) {
+      outputPath = argv[i + 1];
+    } else if (strcmp(argv[i], "-a") == 0 && i + 1 < argc) {
+      algorithmType = argv[i + 1];
+    } else {
+      std::cout << "warning: switch " << argv[i]
+                << " doesn't supported or provided any value! \n";
+    }
   }
-}
 
-// TODO: add argc
-int main() {
-  std::string filePath = "../data/af_0_k101_b.mtx";
+  if (vectorPath.length() == 0 || matrixPath.length() == 0) {
+    std::cout << "vectorPath or matrixPath is empty.\n";
+    return 1;
+  }
+
+  if (outputPath.length() == 0) {
+    outputPath = "./";
+  }
+
+  if (algorithmType.length() == 0) {
+    algorithmType = "NONE";
+  }
+  std::cout << "\n";
+
+  // vector data
+  // std::string filePath = "../data/b_sparse_af_0_k101.mtx";
+  // std::string filePath = "../data/b.mtx";
   MtxVector<long double> v;
-  v.readMtxData(filePath);
+  v.readDataFrom(vectorPath);
 
-  std::cout << "Vector:" << std::endl << "#Rows=" << v.getM() << std::endl;
-
-  MtxMatrix<long double> m;
-
-  filePath = "../data/af_0_k101.mtx";
-  m.readMtxData(filePath);
-
-  std::cout << "Matrix:" << std::endl
-            << "#Rows=" << m.getM() << ", #Columns=" << m.getN()
-            << ", #NonZeros=" << m.getNZ() << ", isEmpty= " << m.isEmpty()
+  auto vDim = v.getDimension();
+  std::cout << "[Reading]>> Vector(" << vectorPath << "):\n"
+            << "#rows=" << vDim->getRows()
+            << ", #columns=" << vDim->getColumns()
+            << ", #nonzeros=" << vDim->getNonZeros() << std::endl
             << std::endl;
 
-  // Solver<MtxMatrix<long double>, MtxVector<long double>> s;
-  //
-  // int result = s.solve(m, v);
-  // std::cout << "Result= " << result << std::endl;
+  // matrix data
+  MtxMatrix<long double> m;
+
+  // filePath = "../data/af_0_k101.mtx";
+  // filePath = "../data/L.mtx";
+  m.readDataFrom(matrixPath);
+
+  std::cout << "[Reading]>> Matrix(" << matrixPath << "):\n"
+            << "#rows=" << m.getDimension()->getRows()
+            << ", #columns=" << m.getDimension()->getColumns()
+            << ", #nonzeros=" << m.getDimension()->getNonZeros() << std::endl
+            << std::endl;
+
+  if (algorithmType.compare("simple") == 0) {
+    SimpleSolver<MtxMatrix<long double>, MtxVector<long double>> s;
+
+    SolverResult result = s.solve(&m, &v);
+    v.save(outputPath, "ss.mtx");
+    std::cout << "\n[Saved]>> the result saved in ["
+              << outputPath + "ss.mtx]\n";
+  } else if (algorithmType.compare("sparse") == 0) {
+    SparseSolver<MtxMatrix<long double>, MtxVector<long double>> ss;
+
+    SolverResult result = ss.solve(&m, &v);
+    v.save(outputPath, "sps.mtx");
+    std::cout << "\n[Saved]>> the result saved in ["
+              << outputPath + "sps.mtx]\n";
+  } else {
+    std::cout << "\n[Warning]>> Your algorithm type(-a) switch is "
+              << algorithmType << " which is not supported.\n"
+              << "Possible options are \"simple\" and \"sparse\"\n"
+              << "Running \"simple\" as a default solver.\n\n";
+
+    SimpleSolver<MtxMatrix<long double>, MtxVector<long double>> s;
+
+    SolverResult result = s.solve(&m, &v);
+    v.save(outputPath, "ss.mtx");
+    std::cout << "\n[Saved]>> the result saved in ["
+              << outputPath + "ss-default.mtx]\n";
+  }
+
   return 0;
 }

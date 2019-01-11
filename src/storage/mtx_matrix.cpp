@@ -24,7 +24,10 @@ void MtxMatrix<DataType>::readDataFrom(std::string filePath) {
 
   // initializing Lx(value array), Lp(pointer array), Li(indices array)
   this->Lx = new DataType[nz];
-  this->Lp = new int[nz + 1];
+  for (int i = 0; i < nz; i++) {
+    this->Lx[i] = 0.;
+  }
+  this->Lp = new int[columns + 1];
   this->Li = new int[nz];
 
   this->Lp[0] = 0;
@@ -32,7 +35,7 @@ void MtxMatrix<DataType>::readDataFrom(std::string filePath) {
 
   // reading matrix entries
   int m, n, idx;
-  DataType data;
+  // DataType data;
   for (int l = 0, pn = 1; l < nz; l++) {
     fin >> this->Li[l] >> n >> this->Lx[l];
     if (n - pn == 0) { // if they are on the same column
@@ -43,23 +46,6 @@ void MtxMatrix<DataType>::readDataFrom(std::string filePath) {
     }
   }
 
-  // std::cout << "COL: ";
-  // for (int i = 0; i < 5; i++) {
-  //   std::cout << this->Lp[i] << " ";
-  // }
-  //
-  // std::cout << std::endl << "ROW: ";
-  // for (int i = 0; i < 20; i++) {
-  //   std::cout << this->Li[i] << " ";
-  // }
-  //
-  // std::cout << std::endl << "DADataTypeA: ";
-  // for (int i = 0; i < 20; i++) {
-  //   std::cout << this->Lx[i] << " ";
-  // }
-  //
-  // std::cout << std::endl;
-
   fin.close();
 }
 
@@ -67,7 +53,8 @@ template <typename DataType> Dimension *MtxMatrix<DataType>::getDimension() {
   return &this->dim;
 }
 
-template <typename DataType> void MtxMatrix<DataType>::save(std::string path) {
+template <typename DataType>
+void MtxMatrix<DataType>::save(std::string path, std::string name) {
   return;
 }
 

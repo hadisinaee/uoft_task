@@ -4,11 +4,17 @@
 #include <sstream>
 #include <vector>
 
+// reads data from the given file source path
 template <typename DataType>
 void MtxVector<DataType>::readDataFrom(std::string filePath) {
   // open the file
   std::ifstream fin(filePath);
+
+  // creating a dimension for this vector
   this->dim = Dimension();
+
+  // represent that the given file is a dense or a sparse vector
+  bool isDense = true;
 
   // ignore headers and comments
   while (fin.peek() == '%')
@@ -39,21 +45,58 @@ void MtxVector<DataType>::readDataFrom(std::string filePath) {
   this->dim.setColumns(std::stoi(tokens[1]));
   if (tokens.size() == 3) {
     this->dim.setNonZeros(std::stoi(tokens[2]));
+    isDense = false;
+  } else {
+    this->dim.setNonZeros(this->dim.getRows());
   }
 
   // create the vector values
-  // std::cout << this->dim.getColumns() << std::endl;
-  this->data = new DataType[this->dim.getRows()];
+  // initializing Lx(value array), Lp(pointer array), Li(indices array)
+  this->Lx = new DataType[this->dim.getNonZeros()];
+  this->Lp = new int[this->dim.getColumns() + 1];
+  this->Li = new int[this->dim.getNonZeros()];
+  this->raw_data = new DataType[this->dim.getRows() + 1];
 
-  // read the the vector data
-  DataType input = 0;
-  int idx = 0;
-  while (fin >> input) {
-    this->setDataAt(idx, input);
-    if (input != 0) {
+  this->Lp[0] = 0;
+  this->Lp[1] = 0;
+
+  int m, n = isDense ? 1 : 0, idx;
+  for (int l = 0, pn = 1; l < this->dim.getNonZeros(); l++) {
+    if (isDense) {
+      this->Li[l] = l;
+      fin >> this->Lx[l];
+    } else {
+      fin >> this->Li[l] >> n >> this->Lx[l];
     }
-    idx++;
+
+    // add to available set of indicies which are not zero
+    availableIndicies.insert(this->Lx[l]);
+    this->raw_data[this->Li[l]] = this->Lx[l];
+
+    if (n - pn == 0) { // if they are on the same column
+      this->Lp[pn]++;
+    } else {
+      this->Lp[n] = this->Lp[pn] + 1;
+      pn = n;
+    }
   }
+
+  // std::cout << "COL: ";
+  // for (int i = 1; i < this->dim.getColumns() + 1; i++) {
+  //   std::cout << this->Lp[i] << " ";
+  // }
+  //
+  // std::cout << std::endl << "ROW: ";
+  // for (int i = 0; i < this->dim.getNonZeros(); i++) {
+  //   std::cout << this->Li[i] << " ";
+  // }
+  //
+  // std::cout << std::endl << "DADataTypeA: ";
+  // for (int i = 0; i < this->dim.getNonZeros(); i++) {
+  //   std::cout << this->Lx[i] << " ";
+  // }
+  //
+  // std::cout << std::endl;
 
   fin.close();
 }
@@ -63,34 +106,100 @@ template <typename DataType> Dimension *MtxVector<DataType>::getDimension() {
 }
 
 template <typename DataType>
-void MtxVector<DataType>::save(std::string outputPath) {
+void MtxVector<DataType>::save(std::string outputPath, std::string name) {
+  // creating an output stream
+  std::ofstream fout;
+  std::string finalFilePath;
+
+  // formating the output path correctly
+  std::string backSlashString = "/";
+  if (outputPath.size() >= backSlashString.size() &&
+      outputPath.compare(outputPath.size() - backSlashString.size(),
+                         backSlashString.size(), backSlashString) == 0)
+    finalFilePath += name;
+  else
+    finalFilePath += ("/" + name);
+
+  // counting number of nonzeros in the final answer
+  int nz = 0;
+  for (int i = 0; i < this->getDimension()->getRows(); i++) {
+    if (this->raw_data[i] != 0)
+      nz++;
+  }
+
+  // stroing in the .mtx format
+  fout.open(finalFilePath);
+
+  fout << "% Vector Type \n";
+  fout << this->getDimension()->getRows() << " "
+       << this->getDimension()->getColumns() << " ";
+
+  // if it is a dense vector, skip the nonzero part in the .mtx
+  if (nz != this->getDimension()->getRows()) {
+    fout << nz;
+  }
+  fout << "\n";
+
+  // write the nonzero entries of the vector to the file
+  for (int i = 0; i < this->getDimension()->getRows(); i++) {
+    if (this->raw_data[i] != 0) {
+      fout << i + 1 << " " << 1 << " " << this->raw_data[i] << std::endl;
+    }
+  }
+
+  fout.close();
   return;
 }
 
 template <typename DataType> bool MtxVector<DataType>::isEmpty() {
-  return !this->data;
+  return !this->Lx;
 }
 
 template <typename DataType>
-std::list<int> *MtxVector<DataType>::getNoneZeroRowIndices(const int indx) {
-  return this->nzRowIndices;
+std::list<int> *MtxVector<DataType>::getNoneZeroRowIndices(const int idx) {
+  // computing the length of the column
+  int columnLength = this->Lp[idx] - this->Lp[idx - 1];
+
+  // creating a list of column raw_data with the computed length of the given
+  // index
+  std::list<int> *rowIndicesList = new std::list<int>[columnLength];
+
+  // iterating over nonzero raw_data of the given index column
+  // saving them inside a list
+  for (int i = this->Lp[idx - 1]; i < this->Lp[idx]; i++) {
+    rowIndicesList->push_back(this->Li[i]);
+  }
+
+  return rowIndicesList;
 }
 
-template <typename DataType> DataType MtxVector<DataType>::getDataAt(int idx) {
-  return this->data[idx];
-}
-
+// returns the i-th entriy in the vector.
 template <typename DataType>
-void MtxVector<DataType>::setDataAt(int idx, DataType value) {
-  this->data[idx] = value;
+DataType MtxVector<DataType>::getDataAt(int rowIndex) {
+  DataType a = this->raw_data[rowIndex];
+  return a;
 }
 
+// sets a value at the i-th index of the vector
+template <typename DataType>
+void MtxVector<DataType>::setDataAt(int rowIndex, DataType value) {
+  this->raw_data[rowIndex] = value;
+}
+
+// returns i-th element of Lx not the whole vector
 template <typename DataType> DataType MtxVector<DataType>::operator[](int idx) {
-  return this->data[idx];
+  return this->Lx[idx];
 }
 
 template <typename DataType>
 std::list<DataType> *MtxVector<DataType>::getColumn(const int idx) {
   // doesn't apply for vectors
   return NULL;
+}
+
+template <typename DataType> int *MtxVector<DataType>::getLp() {
+  return this->Lp;
+}
+template <typename DataType> int *MtxVector<DataType>::getLi() {
+  return this->Li;
 }
