@@ -15,19 +15,24 @@ void Graph::DFSUtil(int v, bool visited[]) {
   // Mark the current node as visited and add it the result vector
   visited[v] = true;
 
+  // v is the parent of all the following direct nodes
+  const int parent = v;
+
   // add v, the visited node, to the result vector, filtering duplicate items
   if (visitedNodes.count(v) == 0) {
     // v dosen't exist in the vector
     this->resultVector.push_back(v);
-    visitedNodes.insert(v);
+    this->visitedNodes.insert(v);
   }
 
   // Recur for all the vertices adjacent
   // to this vertex
   std::list<int>::iterator i;
-  for (i = adj[v].begin(); i != adj[v].end(); ++i)
+  for (i = adj[v].begin(); i != adj[v].end(); ++i) {
+    this->spanTree[*i].insert(parent);
     if (!visited[*i])
       DFSUtil(*i, visited);
+  }
 }
 
 // DFS traversal of the vertices reachable from v.
@@ -44,3 +49,5 @@ void Graph::DFS(int v) {
 }
 
 std::vector<int> *Graph::getResultList() { return &this->resultVector; }
+
+std::set<int> Graph::getParentOf(const int child) { return spanTree[child]; }

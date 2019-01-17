@@ -2,6 +2,7 @@
 #define GRAPH_H
 
 #include <list>
+#include <map>
 #include <set>
 #include <vector>
 
@@ -21,6 +22,7 @@ class Graph {
   std::list<int> *adj;
   std::vector<int> resultVector;
   std::set<int> visitedNodes;
+  std::map<int, std::set<int>> spanTree;
 
   // A recursive function used by DFS
   void DFSUtil(int, bool[]);
@@ -36,7 +38,10 @@ public:
   // reachable from v
   void DFS(int);
 
+  // returns a list of nodes of non duplicated vertices
   std::vector<int> *getResultList();
+  // returns parent set of a the given vertice
+  std::set<int> getParentOf(const int);
 };
 
 #endif
