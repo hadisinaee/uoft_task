@@ -10,5 +10,5 @@
 
 - [ ] adding a `CMake` file.
 - [ ] adding tests.
-- [ ] adding more solvers with support of parallelism.
+- [x] adding more solvers with support of parallelism.
 - [ ] try to setup Travis CI with this repo.
