@@ -12,7 +12,7 @@
  */
 class SolverResult {
 private:
-  long int t;
+    double t;
   short s;
 
 public:
