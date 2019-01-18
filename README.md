@@ -6,9 +6,22 @@
   - **utils**: contains utility classes which are needed by other classes. In this case, it has a `dfs` for traversing a graph.
 - **tests**: all tests of these project will go here.
 
+# CLI
+List of available switches
+``` 
+	-v vector_file_path, e.g: -v ./b.mtx
+	-m matrix_file_path, e.g: -m ./L.mtx
+	-o output_directory_path, e.g: -o ./
+	-a algorithm_type[simple, sparse, par_sparse], e.g: -a par_sparse
+```
 # TODO
 
-- [ ] adding a `CMake` file.
-- [ ] adding tests.
-- [x] adding more solvers with support of parallelism.
+- [x] add a `CMakeLists` file.
+- [ ] add support for testing.
+    - [x] add googletest framework.
+    - [ ] write tests for utils classes.
+    - [ ] write tests for storage classes.
+    - [ ] write tests for solver classes.
+- [x] add more solvers with support of parallelism.
+    - [x] wavefront based parallelism.
 - [ ] try to setup Travis CI with this repo.
