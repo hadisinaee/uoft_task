@@ -22,6 +22,7 @@ List of available switches
     - [ ] write tests for utils classes.
     - [ ] write tests for storage classes.
     - [ ] write tests for solver classes.
+- [ ] update readme with algorithms descriptions.
 - [x] add more solvers with support of parallelism.
     - [x] wavefront based parallelism.
 - [ ] try to setup Travis CI with this repo.
