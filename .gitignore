@@ -39,3 +39,7 @@
 *.exe
 *.out
 *.app
+
+# IDEs
+.xml
+.iml
