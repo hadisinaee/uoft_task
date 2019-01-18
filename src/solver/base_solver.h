@@ -16,10 +16,10 @@ private:
   short s;
 
 public:
-  long int getTime() { return this->t; }
+    double getTime() { return this->t; }
   short getSolverStatus() { return this->s; }
 
-  void setTime(const long int value) { this->t = value; }
+    void setTime(const double value) { this->t = value; }
   void setSolverStatus(const short value) { this->s = value; }
 };
 
