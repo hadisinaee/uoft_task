@@ -45,4 +45,4 @@
 .iml
 
 # exceptions
-!tests/data
+!tests/data/*
