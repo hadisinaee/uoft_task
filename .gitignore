@@ -43,3 +43,6 @@
 # IDEs
 .xml
 .iml
+
+# exceptions
+!tests/data
