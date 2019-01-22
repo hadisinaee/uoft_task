@@ -53,7 +53,7 @@ SolverResult SparseParallelSolver<M, V>::solve(M *L, V *b) {
     graphTime = omp_get_wtime() - graphTime;
     sr.setStepTime("graph_creating", graphTime);
 
-    // creating set B, a set of nonzeros of right hand side b
+    // creating set B, a set of none_zeros of right hand side b
     std::list<int> *BList = b->getNoneZeroRowIndices(1);
 
     // creating the reach set of B, X = reach_L(B)

@@ -54,7 +54,7 @@ SolverResult SparseSolver<M, V>::solve(M *L, V *b) {
     graphTime = omp_get_wtime() - graphTime;
     sr.setStepTime("graph_creation", graphTime);
 
-    // creating set B, a set of nonzeros of right hand side b
+    // creating set B, a set of none_zeros of right hand side b
     std::list<int> *BList = b->getNoneZeroRowIndices(1);
 
     double dfsTime = omp_get_wtime();
