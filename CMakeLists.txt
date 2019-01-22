@@ -20,6 +20,5 @@ include_directories(src/solver)
 include_directories(src/storage)
 include_directories(src/utils)
 include_directories(tests/)
-include_directories(tests/dfs)
 
 add_executable(uoft_task src/main.cpp)

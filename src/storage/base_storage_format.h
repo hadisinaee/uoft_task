@@ -14,16 +14,18 @@ class Dimension {
 private:
   int rows;
   int columns;
-  int nonzeros;
+    int none_zeros;
 
 public:
   int getRows() { return this->rows; }
   int getColumns() { return this->columns; }
-  int getNonZeros() { return this->nonzeros; }
+
+    int getNonZeros() { return this->none_zeros; }
 
   void setRows(const int value) { this->rows = value; }
   void setColumns(const int value) { this->columns = value; }
-  void setNonZeros(const int value) { this->nonzeros = value; }
+
+    void setNonZeros(const int value) { this->none_zeros = value; }
 };
 
 /**
