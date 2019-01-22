@@ -21,6 +21,8 @@ List of available switches
     - [x] add googletest framework.
     - [ ] write tests for utils classes.
     - [ ] write tests for storage classes.
+        - [x] add tests for `mtx_vector`
+        - [ ] add tests for `mtx_matrix`
     - [ ] write tests for solver classes.
 - [ ] update readme with algorithms descriptions.
 - [x] add more solvers with support of parallelism.
