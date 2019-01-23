@@ -19,7 +19,7 @@ List of available switches
 - [x] add a `CMakeLists` file.
 - [ ] add support for testing.
     - [x] add googletest framework.
-    - [ ] write tests for utils classes.
+    - [x] write tests for utils classes.
     - [ ] write tests for storage classes.
         - [x] add tests for `mtx_vector`
         - [x] add tests for `mtx_matrix`
