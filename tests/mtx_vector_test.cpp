@@ -87,7 +87,7 @@ TEST_F(MtxVectorTest, double_none_zeros_index_one_column) {
 
     // reading the whole column
     auto columnIndices = vDouble.getNoneZeroRowIndices(1);
-    int idx = 0;
+    int idx = 1;
     for (auto it : *columnIndices) {
         EXPECT_EQ(it, idx++) << "the row index for column 1 is different from the baseline\n";
     }
@@ -156,7 +156,7 @@ TEST_F(MtxVectorTest, int_none_zeros_index_one_column) {
 
     // reading the whole column
     auto columnIndices = vInt.getNoneZeroRowIndices(1);
-    int idx = 0;
+    int idx = 1;
     for (auto it : *columnIndices) {
         EXPECT_EQ(it, idx++) << "the row index for column 1 is different from the baseline\n";
     }

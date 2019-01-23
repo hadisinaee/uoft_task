@@ -68,10 +68,10 @@ void MtxVector<DataType>::readDataFrom(std::string filePath) {
     this->Lp[0] = 0;
     this->Lp[1] = 0;
 
-    int m, n = isDense ? 1 : 0, idx;
+    int n = isDense ? 1 : 0;
     for (int l = 0, pn = 1; l < this->dim.getNonZeros(); l++) {
         if (isDense) {
-            this->Li[l] = l;
+            this->Li[l] = l + 1;
             fin >> this->Lx[l];
         } else {
             fin >> this->Li[l] >> n >> this->Lx[l];
@@ -88,23 +88,6 @@ void MtxVector<DataType>::readDataFrom(std::string filePath) {
             pn = n;
         }
     }
-
-    // std::cout << "COL: ";
-    // for (int i = 1; i < this->dim.getColumns() + 1; i++) {
-    //   std::cout << this->Lp[i] << " ";
-    // }
-    //
-    // std::cout << std::endl << "ROW: ";
-    // for (int i = 0; i < this->dim.getNonZeros(); i++) {
-    //   std::cout << this->Li[i] << " ";
-    // }
-    //
-    // std::cout << std::endl << "DADataTypeA: ";
-    // for (int i = 0; i < this->dim.getNonZeros(); i++) {
-    //   std::cout << this->Lx[i] << " ";
-    // }
-    //
-    // std::cout << std::endl;
 
     fin.close();
 }
@@ -181,26 +164,22 @@ std::list<int> *MtxVector<DataType>::getNoneZeroRowIndices(const int idx) {
     return rowIndicesList;
 }
 
-// returns the i-th entriy in the vector.
+// returns the i-th entry in the vector.
 template<typename DataType>
-DataType MtxVector<DataType>::getDataAt(int rowIndex) {
-    DataType a = this->raw_data[rowIndex];
-    return a;
+DataType MtxVector<DataType>::getDataAt(int idx) {
+    if (idx >= 0 && idx < this->dim.getNonZeros()) {
+        return this->Lx[idx];
+    } else {
+        return NULL;
+    }
 }
 
 // sets a value at the i-th index of the vector
 template<typename DataType>
-void MtxVector<DataType>::setDataAt(int rowIndex, DataType value) {
-    // setting the rowIndex easily
-    this->raw_data[rowIndex] = value;
-
-    // setting the rowIndex inside the Lx
-    // need to know what the index is in Li, then, setting the value
-    for (int i = 0; i < this->dim.getNonZeros(); ++i) {
-        if (this->Li[i] == rowIndex) {
-            this->Lx[rowIndex] = value;
-            return;
-        }
+void MtxVector<DataType>::setDataAt(int idx, DataType value) {
+    // has to be in bound of Lx range
+    if (idx >= 0 && idx < this->dim.getNonZeros()) {
+        this->Lx[idx] = value;
     }
 }
 
