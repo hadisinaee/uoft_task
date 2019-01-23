@@ -119,12 +119,16 @@ std::list<DataType> *MtxMatrix<DataType>::getColumn(const int idx) {
 
 template<typename DataType>
 DataType MtxMatrix<DataType>::getDataAt(int idx) {
-    return this->Lx[idx];
+    if (idx >= 0 && idx < this->dim.getNonZeros())
+        return this->Lx[idx];
+    else
+        return NULL;
 }
 
 template<typename DataType>
 void MtxMatrix<DataType>::setDataAt(int idx, DataType value) {
-    this->Lx[idx] = value;
+    if (idx >= 0 && idx < this->dim.getNonZeros())
+        this->Lx[idx] = value;
 }
 
 template<typename DataType>
@@ -146,7 +150,10 @@ std::list<int> *MtxMatrix<DataType>::getNoneZeroRowIndices(const int idx) {
 
 template<typename DataType>
 DataType MtxMatrix<DataType>::operator[](int idx) {
-    return this->Lx[idx];
+    if (idx >= 0 && idx < this->dim.getNonZeros())
+        return this->Lx[idx];
+    else
+        return NULL;
 }
 
 template<typename DataType>
