@@ -17,7 +17,7 @@ List of available switches
 # TODO
 
 - [x] add a `CMakeLists` file.
-- [ ] add support for testing.
+- [x] add support for testing.
     - [x] add googletest framework.
     - [x] write tests for utils classes.
     - [x] write tests for storage classes.
