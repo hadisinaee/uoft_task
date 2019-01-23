@@ -5,27 +5,65 @@
 
 template<typename DataType>
 void MtxMatrix<DataType>::readDataFrom(std::string filePath) {
+    // checks that the given path is valid
+    if (filePath.empty()) {
+        return;
+    }
+
     // open the file
     std::ifstream fin(filePath);
+    if (!fin.is_open()) {
+        return;
+    }
+
     this->dim = Dimension();
+
+    // represent that the given file is a dense or a sparse vector
+    bool isDense = true;
 
     // ignore headers and comments
     while (fin.peek() == '%')
         fin.ignore(2048, '\n');
 
-    // reading information of the matrix from the first line
-    int rows, columns, nz;
-    fin >> rows >> columns >> nz;
+    // reading line by line
+    // the first line contains the information of the vector
+    std::string line;
+    std::getline(fin, line);
 
-    // setting matrix information in Dimension
-    this->dim.setRows(rows);
-    this->dim.setColumns(columns);
-    this->dim.setNonZeros(nz);
+    // Vector of string to save tokens
+    std::vector<std::string> tokens;
+
+    // stringstream class check1
+    std::stringstream check1(line);
+
+    std::string intermediate;
+
+    // Tokenizing w.r.t. space ' '
+    while (getline(check1, intermediate, ' ')) {
+        tokens.push_back(intermediate);
+    }
+
+    // checks for sparsity of the vector
+    // 3 parts if it is a sparse vector with nonzero part
+    // 2 parts if it is a dense vector
+    this->dim.setRows(std::stoi(tokens[0]));
+    this->dim.setColumns(std::stoi(tokens[1]));
+    if (tokens.size() == 3) {
+        this->dim.setNonZeros(std::stoi(tokens[2]));
+        isDense = false;
+    } else {
+        this->dim.setNonZeros(this->dim.getRows() * this->dim.getColumns());
+    }
+
+    // reading information of the matrix from the first line
+    auto columns = this->getDimension()->getColumns(),
+            nz = this->getDimension()->getNonZeros();
+
 
     // initializing Lx(value array), Lp(pointer array), Li(indices array)
     this->Lx = new DataType[nz];
     for (int i = 0; i < nz; i++) {
-        this->Lx[i] = 0.;
+        this->Lx[i] = (DataType) 0;
     }
     this->Lp = new int[columns + 1];
     this->Li = new int[nz];
@@ -45,14 +83,6 @@ void MtxMatrix<DataType>::readDataFrom(std::string filePath) {
         }
     }
 
-//    std::cout << "printing columns of L" << std::endl;
-//    for (int j = 0; j < this->getDimension()->getColumns(); ++j) {
-//        printf("Column(%d) starts at index %d\n", j, this->Lp[j]);
-//        for (int p = this->Lp[j]; p < this->Lp[j + 1]; ++p) {
-//            printf("Lx[%d, %d] = %Lf \n", p, j, this->Lx[p]);
-//        }
-//    }
-//    std::cout << std::endl;
     fin.close();
 }
 
