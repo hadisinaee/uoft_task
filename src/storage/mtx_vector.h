@@ -13,13 +13,13 @@ template<class DataType>
 class MtxVector : CSCStorageFormat<DataType> {
 public:
     // read file from .mtx
-    void readDataFrom(std::string);
+    int readDataFrom(std::string);
 
     // returns dimension of the vector(n*1)
     Dimension *getDimension();
 
     // saves the data in the given path
-    void save(std::string, std::string);
+    int save(std::string, std::string);
 
     // checks for emptiness of the vector
     bool isEmpty();
@@ -31,7 +31,7 @@ public:
     DataType getDataAt(int);
 
     // set a value in the given index
-    void setDataAt(int, DataType);
+    int setDataAt(int, DataType);
 
     // returns the value at the given index
     DataType operator[](int);

@@ -6,16 +6,16 @@
 
 // reads data from the given file source path
 template<typename DataType>
-void MtxVector<DataType>::readDataFrom(std::string filePath) {
+int MtxVector<DataType>::readDataFrom(std::string filePath) {
     // checks that the given path is valid
     if (filePath.empty()) {
-        return;
+        return 1;
     }
 
     // open the given file
     std::ifstream fin(filePath);
     if (!fin.is_open()) {
-        return;
+        return 2;
     }
 
     // creating a dimension for this vector
@@ -90,6 +90,8 @@ void MtxVector<DataType>::readDataFrom(std::string filePath) {
     }
 
     fin.close();
+
+    return 0;
 }
 
 template<typename DataType>
@@ -98,7 +100,7 @@ Dimension *MtxVector<DataType>::getDimension() {
 }
 
 template<typename DataType>
-void MtxVector<DataType>::save(std::string outputPath, std::string name) {
+int MtxVector<DataType>::save(std::string outputPath, std::string name) {
     // creating an output stream
     std::ofstream fout;
     std::string finalFilePath;
@@ -140,7 +142,7 @@ void MtxVector<DataType>::save(std::string outputPath, std::string name) {
     }
 
     fout.close();
-    return;
+    return 0;
 }
 
 template<typename DataType>
@@ -170,17 +172,20 @@ DataType MtxVector<DataType>::getDataAt(int idx) {
     if (idx >= 0 && idx < this->dim.getNonZeros()) {
         return this->Lx[idx];
     } else {
-        return NULL;
+        return 0.0;
     }
 }
 
 // sets a value at the i-th index of the vector
 template<typename DataType>
-void MtxVector<DataType>::setDataAt(int idx, DataType value) {
+int MtxVector<DataType>::setDataAt(int idx, DataType value) {
     // has to be in bound of Lx range
-    if (idx >= 0 && idx < this->dim.getNonZeros()) {
+    if (idx >= 0 && idx < this->dim.getNonZeros())
         this->Lx[idx] = value;
-    }
+    else
+        return 1;
+    return 0;
+
 }
 
 // returns i-th element of Lx not the whole vector

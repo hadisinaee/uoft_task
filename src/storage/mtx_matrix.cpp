@@ -1,25 +1,24 @@
 #include "mtx_matrix.h"
 #include <algorithm>
 #include <fstream>
+#include <sstream>
 #include <list>
 
 template<typename DataType>
-void MtxMatrix<DataType>::readDataFrom(std::string filePath) {
+int MtxMatrix<DataType>::readDataFrom(std::string filePath) {
     // checks that the given path is valid
     if (filePath.empty()) {
-        return;
+        return 1;
     }
 
     // open the file
     std::ifstream fin(filePath);
     if (!fin.is_open()) {
-        return;
+        return 2;
     }
 
     this->dim = Dimension();
 
-    // represent that the given file is a dense or a sparse vector
-    bool isDense = true;
 
     // ignore headers and comments
     while (fin.peek() == '%')
@@ -50,7 +49,6 @@ void MtxMatrix<DataType>::readDataFrom(std::string filePath) {
     this->dim.setColumns(std::stoi(tokens[1]));
     if (tokens.size() == 3) {
         this->dim.setNonZeros(std::stoi(tokens[2]));
-        isDense = false;
     } else {
         this->dim.setNonZeros(this->dim.getRows() * this->dim.getColumns());
     }
@@ -84,6 +82,8 @@ void MtxMatrix<DataType>::readDataFrom(std::string filePath) {
     }
 
     fin.close();
+
+    return 0;
 }
 
 template<typename DataType>
@@ -92,7 +92,8 @@ Dimension *MtxMatrix<DataType>::getDimension() {
 }
 
 template<typename DataType>
-void MtxMatrix<DataType>::save(std::string path, std::string name) {
+int MtxMatrix<DataType>::save(std::string path, std::string name) {
+    return -1;
 }
 
 template<typename DataType>
@@ -122,13 +123,17 @@ DataType MtxMatrix<DataType>::getDataAt(int idx) {
     if (idx >= 0 && idx < this->dim.getNonZeros())
         return this->Lx[idx];
     else
-        return NULL;
+        return 0.0;
 }
 
 template<typename DataType>
-void MtxMatrix<DataType>::setDataAt(int idx, DataType value) {
+int MtxMatrix<DataType>::setDataAt(int idx, DataType value) {
     if (idx >= 0 && idx < this->dim.getNonZeros())
         this->Lx[idx] = value;
+    else
+        return 1;
+    return 0;
+
 }
 
 template<typename DataType>
@@ -153,7 +158,7 @@ DataType MtxMatrix<DataType>::operator[](int idx) {
     if (idx >= 0 && idx < this->dim.getNonZeros())
         return this->Lx[idx];
     else
-        return NULL;
+        return 0.0;
 }
 
 template<typename DataType>

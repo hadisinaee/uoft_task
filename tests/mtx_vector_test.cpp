@@ -29,7 +29,8 @@ protected:
     }
 
 
-    MtxVector<double> vDouble, vInt;
+    MtxVector<double> vDouble;
+    MtxVector<int> vInt;
 
     std::string pathDouble, pathInt;
     int TRUE_DOUBLE_N, TRUE_DOUBLE_M, TRUE_DOUBLE_NZ;
@@ -40,10 +41,28 @@ protected:
     int *TRUE_INT_LX;
 };
 
+TEST_F(MtxVectorTest, fail_double_read_dense_invalid_string) {
+    // reading data
+    auto readResult = vDouble.readDataFrom("");
+
+    // 1 for invalid file path
+    EXPECT_EQ(readResult, 1) << "invalid file path strings return 1 as a read result.\n";
+}
+
+TEST_F(MtxVectorTest, fail_double_read_dense_cannot_open_file) {
+    // reading data
+    auto readResult = vDouble.readDataFrom("./somewhere");
+
+    // 1 for invalid file path
+    EXPECT_EQ(readResult, 2) << "do not exist files return 2 as a read result.\n";
+}
+
 TEST_F(MtxVectorTest, double_read_dense) {
     // reading data
-    vDouble.readDataFrom(pathDouble);
+    auto readResult = vDouble.readDataFrom(pathDouble);
 
+    // 0 for successful read of data
+    EXPECT_EQ(readResult, 0) << "successful read operations return 0.\n";
     // check reading correctness
     ASSERT_FALSE(vDouble.isEmpty()) << "it has to contain some data.\n";
 

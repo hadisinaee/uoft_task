@@ -17,12 +17,14 @@ List of available switches
 # TODO
 
 - [x] add a `CMakeLists` file.
-- [x] add support for testing.
+- [ ] add support for testing.
     - [x] add googletest framework.
     - [x] write tests for utils classes.
-    - [x] write tests for storage classes.
-        - [x] add tests for `mtx_vector`
-        - [x] add tests for `mtx_matrix`
+    - [ ] write tests for storage classes.
+        - [x] add tests for dense `mtx_vector`
+        - [x] add tests for dense `mtx_matrix`
+        - [ ] add tests for sparse `mtx_vector`
+        - [ ] add tests for sparse `mtx_matrix`
     - [ ] write tests for solver classes.
 - [ ] update readme with algorithms descriptions.
 - [x] add more solvers with support of parallelism.

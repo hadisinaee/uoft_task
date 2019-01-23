@@ -51,7 +51,8 @@ protected:
     }
 
 
-    MtxMatrix<double> mDouble, mInt;
+    MtxMatrix<double> mDouble;
+    MtxMatrix<int> mInt;
 
     std::string pathDouble, pathInt;
     int TRUE_DOUBLE_N, TRUE_DOUBLE_M, TRUE_DOUBLE_NZ;
@@ -62,9 +63,20 @@ protected:
     int *TRUE_INT_LX;
 };
 
+TEST_F(MtxMatrixTest, fail_double_read_dense_invalid_string) {
+    // reading data
+    EXPECT_EQ(1, mDouble.readDataFrom("")) << "invalid file path strings return 1 as a read result.\n";
+}
+
+TEST_F(MtxMatrixTest, fail_double_read_dense_cannot_open_file) {
+    // reading data
+    EXPECT_EQ(2, mDouble.readDataFrom("./somewhere")) << "do not exist files return 2 as a read result.\n";
+}
+
+
 TEST_F(MtxMatrixTest, double_read_dense) {
     // reading data
-    mDouble.readDataFrom(pathDouble);
+    EXPECT_EQ(0, mDouble.readDataFrom(pathDouble)) << "has to return 0 for success reading of data";
 
     // check reading correctness
     ASSERT_FALSE(mDouble.isEmpty()) << "it has to contain some data.\n";
@@ -78,7 +90,7 @@ TEST_F(MtxMatrixTest, double_read_dense) {
 }
 
 TEST_F(MtxMatrixTest, double_check_mtx_data) {
-    mDouble.readDataFrom(pathDouble);
+    EXPECT_EQ(0, mDouble.readDataFrom(pathDouble)) << "has to return 0 for success reading of data";
 
     // check index values
     auto li = mDouble.getLi();
@@ -105,7 +117,7 @@ TEST_F(MtxMatrixTest, double_check_mtx_data) {
 }
 
 TEST_F(MtxMatrixTest, double_none_zeros_index_one_column) {
-    mDouble.readDataFrom(pathDouble);
+    EXPECT_EQ(0, mDouble.readDataFrom(pathDouble)) << "has to return 0 for success reading of data";
 
     // reading the whole column
     auto columnIndices = mDouble.getNoneZeroRowIndices(1);
@@ -116,7 +128,7 @@ TEST_F(MtxMatrixTest, double_none_zeros_index_one_column) {
 }
 
 TEST_F(MtxMatrixTest, double_set_value) {
-    mDouble.readDataFrom(pathDouble);
+    EXPECT_EQ(0, mDouble.readDataFrom(pathDouble)) << "has to return 0 for success reading of data";
 
     // setting a new value
     mDouble.setDataAt(0, .43);
@@ -133,7 +145,7 @@ TEST_F(MtxMatrixTest, double_set_value) {
 
 TEST_F(MtxMatrixTest, int_read_dense) {
     // reading data
-    mInt.readDataFrom(pathInt);
+    EXPECT_EQ(0, mInt.readDataFrom(pathInt)) << "has to return 0 for successful reading of data";
 
     // check reading correctness
     ASSERT_FALSE(mInt.isEmpty()) << "it has to contain some data.\n";
@@ -147,7 +159,7 @@ TEST_F(MtxMatrixTest, int_read_dense) {
 }
 
 TEST_F(MtxMatrixTest, int_check_mtx_data) {
-    mInt.readDataFrom(pathInt);
+    EXPECT_EQ(0, mInt.readDataFrom(pathInt)) << "has to return 0 for successful reading of data";
 
     // check index values
     auto li = mInt.getLi();
@@ -174,7 +186,7 @@ TEST_F(MtxMatrixTest, int_check_mtx_data) {
 }
 
 TEST_F(MtxMatrixTest, int_none_zeros_index_one_column) {
-    mInt.readDataFrom(pathInt);
+    EXPECT_EQ(0, mInt.readDataFrom(pathInt)) << "has to return 0 for successful reading of data";
 
     // reading the whole column
     auto columnIndices = mInt.getNoneZeroRowIndices(1);
@@ -185,7 +197,7 @@ TEST_F(MtxMatrixTest, int_none_zeros_index_one_column) {
 }
 
 TEST_F(MtxMatrixTest, int_set_value) {
-    mInt.readDataFrom(pathInt);
+    EXPECT_EQ(0, mInt.readDataFrom(pathInt)) << "has to return 0 for successful reading of data";
 
     const int v1 = -100, v2 = -200;
 
