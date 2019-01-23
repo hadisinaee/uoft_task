@@ -19,13 +19,13 @@ protected:
         this->TRUE_INT_M = 1;
         this->TRUE_INT_NZ = 4;
 
-        this->TRUE_DOUBLE_LI = new int[4]{0, 1, 2, 3};
+        this->TRUE_DOUBLE_LI = new int[4]{1, 2, 3, 4};
         this->TRUE_DOUBLE_LP = new int[2]{0, 4};
         this->TRUE_DOUBLE_LX = new double[4]{.1, .2, .3, .4};
 
-        this->TRUE_INT_LI = new int[4]{0, 1, 2, 3};
+        this->TRUE_INT_LI = new int[4]{1, 2, 3, 4};
         this->TRUE_INT_LP = new int[2]{0, 4};
-        this->TRUE_INT_LX = new double[4]{10, 20, 30, 40};
+        this->TRUE_INT_LX = new int[4]{10, 20, 30, 40};
     }
 
 
@@ -36,7 +36,8 @@ protected:
     int TRUE_INT_N, TRUE_INT_M, TRUE_INT_NZ;
     int *TRUE_DOUBLE_LI, *TRUE_INT_LI;
     int *TRUE_DOUBLE_LP, *TRUE_INT_LP;
-    double *TRUE_DOUBLE_LX, *TRUE_INT_LX;
+    double *TRUE_DOUBLE_LX;
+    int *TRUE_INT_LX;
 };
 
 TEST_F(MtxVectorTest, double_read_dense) {
