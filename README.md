@@ -20,7 +20,7 @@ List of available switches
 - [ ] add support for testing.
     - [x] add googletest framework.
     - [x] write tests for utils classes.
-    - [ ] write tests for storage classes.
+    - [x] write tests for storage classes.
         - [x] add tests for `mtx_vector`
         - [x] add tests for `mtx_matrix`
     - [ ] write tests for solver classes.
