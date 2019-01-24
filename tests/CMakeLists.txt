@@ -1,6 +1,6 @@
 # tests - cmake file
 
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.9)
 project(gtests_uoft)
 
 set(CMAKE_CXX_STANDARD 14)
