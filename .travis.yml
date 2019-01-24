@@ -2,6 +2,7 @@ language: cpp
 
 compiler:
   - g++
+  - clang++
 
 before_install:
   - export CMAKE_INSTALLER=install-cmake.sh
