@@ -12,13 +12,14 @@ if (OPENMP_FOUND)
 endif ()
 
 add_subdirectory(tests/)
+add_subdirectory(tests/solver_tests)
+
 
 include_directories(.)
-include_directories(data)
-include_directories(src)
-include_directories(src/solver)
-include_directories(src/storage)
-include_directories(src/utils)
-include_directories(tests/)
+include_directories(include)
+include_directories(include/solver)
+include_directories(include/storage)
+include_directories(include/utils)
+
 
 add_executable(uoft_task src/main.cpp)

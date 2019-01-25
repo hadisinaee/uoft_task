@@ -106,7 +106,7 @@ TEST_F(MtxMatrixTest, fail_double_read_dense_cannot_open_file) {
 
 TEST_F(MtxMatrixTest, double_read_dense) {
     // reading data
-    EXPECT_EQ(0, mDouble.readDataFrom(pathDouble)) << "has to return 0 for success reading of data";
+    ASSERT_EQ(0, mDouble.readDataFrom(pathDouble)) << "has to return 0 for success reading of data";
 
     // check reading correctness
     ASSERT_FALSE(mDouble.isEmpty()) << "it has to contain some data.\n";
@@ -120,7 +120,7 @@ TEST_F(MtxMatrixTest, double_read_dense) {
 }
 
 TEST_F(MtxMatrixTest, double_check_mtx_data) {
-    EXPECT_EQ(0, mDouble.readDataFrom(pathDouble)) << "has to return 0 for success reading of data";
+    ASSERT_EQ(0, mDouble.readDataFrom(pathDouble)) << "has to return 0 for success reading of data";
 
     // check index values
     auto li = mDouble.getLi();
@@ -147,7 +147,7 @@ TEST_F(MtxMatrixTest, double_check_mtx_data) {
 }
 
 TEST_F(MtxMatrixTest, double_none_zeros_index_one_column) {
-    EXPECT_EQ(0, mDouble.readDataFrom(pathDouble)) << "has to return 0 for success reading of data";
+    ASSERT_EQ(0, mDouble.readDataFrom(pathDouble)) << "has to return 0 for success reading of data";
 
     // reading the whole column
     auto columnIndices = mDouble.getNoneZeroRowIndices(1);
@@ -158,7 +158,7 @@ TEST_F(MtxMatrixTest, double_none_zeros_index_one_column) {
 }
 
 TEST_F(MtxMatrixTest, double_set_value) {
-    EXPECT_EQ(0, mDouble.readDataFrom(pathDouble)) << "has to return 0 for success reading of data";
+    ASSERT_EQ(0, mDouble.readDataFrom(pathDouble)) << "has to return 0 for success reading of data";
 
     // setting a new value
     mDouble.setDataAt(0, .43);
@@ -175,7 +175,7 @@ TEST_F(MtxMatrixTest, double_set_value) {
 
 TEST_F(MtxMatrixTest, int_read_dense) {
     // reading data
-    EXPECT_EQ(0, mInt.readDataFrom(pathInt)) << "has to return 0 for successful reading of data";
+    ASSERT_EQ(0, mInt.readDataFrom(pathInt)) << "has to return 0 for successful reading of data";
 
     // check reading correctness
     ASSERT_FALSE(mInt.isEmpty()) << "it has to contain some data.\n";
@@ -189,7 +189,7 @@ TEST_F(MtxMatrixTest, int_read_dense) {
 }
 
 TEST_F(MtxMatrixTest, int_check_mtx_data) {
-    EXPECT_EQ(0, mInt.readDataFrom(pathInt)) << "has to return 0 for successful reading of data";
+    ASSERT_EQ(0, mInt.readDataFrom(pathInt)) << "has to return 0 for successful reading of data";
 
     // check index values
     auto li = mInt.getLi();
@@ -216,7 +216,7 @@ TEST_F(MtxMatrixTest, int_check_mtx_data) {
 }
 
 TEST_F(MtxMatrixTest, int_none_zeros_index_one_column) {
-    EXPECT_EQ(0, mInt.readDataFrom(pathInt)) << "has to return 0 for successful reading of data";
+    ASSERT_EQ(0, mInt.readDataFrom(pathInt)) << "has to return 0 for successful reading of data";
 
     // reading the whole column
     auto columnIndices = mInt.getNoneZeroRowIndices(1);
@@ -227,7 +227,7 @@ TEST_F(MtxMatrixTest, int_none_zeros_index_one_column) {
 }
 
 TEST_F(MtxMatrixTest, int_set_value) {
-    EXPECT_EQ(0, mInt.readDataFrom(pathInt)) << "has to return 0 for successful reading of data";
+    ASSERT_EQ(0, mInt.readDataFrom(pathInt)) << "has to return 0 for successful reading of data";
 
     const int v1 = -100, v2 = -200;
 
@@ -246,7 +246,7 @@ TEST_F(MtxMatrixTest, int_set_value) {
 
 TEST_F(MtxMatrixTest, sparse_int_read_dense) {
     // reading data
-    EXPECT_EQ(0, mSparseInt.readDataFrom(pathSparseInt)) << "has to return 0 for success reading of data";
+    ASSERT_EQ(0, mSparseInt.readDataFrom(pathSparseInt)) << "has to return 0 for success reading of data";
 
     // check reading correctness
     ASSERT_FALSE(mSparseInt.isEmpty()) << "it has to contain some data.\n";
@@ -261,7 +261,7 @@ TEST_F(MtxMatrixTest, sparse_int_read_dense) {
 
 TEST_F(MtxMatrixTest, sparse_int_check_mtx_data) {
     // reading data
-    EXPECT_EQ(0, mSparseInt.readDataFrom(pathSparseInt)) << "has to return 0 for success reading of data";
+    ASSERT_EQ(0, mSparseInt.readDataFrom(pathSparseInt)) << "has to return 0 for success reading of data";
 
     // check index values
     auto li = mSparseInt.getLi();
@@ -289,7 +289,7 @@ TEST_F(MtxMatrixTest, sparse_int_check_mtx_data) {
 
 TEST_F(MtxMatrixTest, sparse_int_none_zeros_index_one_column) {
     // reading data
-    EXPECT_EQ(0, mSparseInt.readDataFrom(pathSparseInt)) << "has to return 0 for success reading of data";
+    ASSERT_EQ(0, mSparseInt.readDataFrom(pathSparseInt)) << "has to return 0 for success reading of data";
 
     // check reading correctness
     // reading the whole column
@@ -310,7 +310,7 @@ TEST_F(MtxMatrixTest, sparse_int_none_zeros_index_one_column) {
 
 TEST_F(MtxMatrixTest, sparse_int_set_value) {
     // reading data
-    EXPECT_EQ(0, mSparseInt.readDataFrom(pathSparseInt)) << "has to return 0 for success reading of data";
+    ASSERT_EQ(0, mSparseInt.readDataFrom(pathSparseInt)) << "has to return 0 for success reading of data";
 
     const int v1 = -100, v2 = -200;
 

@@ -64,7 +64,7 @@ TEST_F(MtxVectorTest, fail_double_read_dense_invalid_string) {
     auto readResult = vDouble.readDataFrom("");
 
     // 1 for invalid file path
-    EXPECT_EQ(readResult, 1) << "invalid file path strings return 1 as a read result.\n";
+    ASSERT_EQ(readResult, 1) << "invalid file path strings return 1 as a read result.\n";
 }
 
 TEST_F(MtxVectorTest, fail_double_read_dense_cannot_open_file) {
@@ -80,7 +80,7 @@ TEST_F(MtxVectorTest, double_read_dense) {
     auto readResult = vDouble.readDataFrom(pathDouble);
 
     // 0 for successful read of data
-    EXPECT_EQ(readResult, 0) << "successful read operations return 0.\n";
+    ASSERT_EQ(readResult, 0) << "successful read operations return 0.\n";
     // check reading correctness
     ASSERT_FALSE(vDouble.isEmpty()) << "it has to contain some data.\n";
 
@@ -93,7 +93,7 @@ TEST_F(MtxVectorTest, double_read_dense) {
 }
 
 TEST_F(MtxVectorTest, double_check_mtx_data) {
-    EXPECT_EQ(vDouble.readDataFrom(pathDouble), 0);
+    ASSERT_EQ(vDouble.readDataFrom(pathDouble), 0);
 
     // check index values
     auto li = vDouble.getLi();
@@ -120,7 +120,7 @@ TEST_F(MtxVectorTest, double_check_mtx_data) {
 }
 
 TEST_F(MtxVectorTest, double_none_zeros_index_one_column) {
-    EXPECT_EQ(vDouble.readDataFrom(pathDouble), 0);
+    ASSERT_EQ(vDouble.readDataFrom(pathDouble), 0);
 
     // reading the whole column
     auto columnIndices = vDouble.getNoneZeroRowIndices(1);
@@ -131,8 +131,8 @@ TEST_F(MtxVectorTest, double_none_zeros_index_one_column) {
 }
 
 TEST_F(MtxVectorTest, double_set_value) {
-    EXPECT_EQ(vDouble.readDataFrom(pathDouble), 0);
-
+    ASSERT_EQ(vDouble.readDataFrom(pathDouble), 0);
+    
     // setting a new value
     vDouble.setDataAt(0, .43);
     vDouble.setDataAt(1, .89);
@@ -148,7 +148,7 @@ TEST_F(MtxVectorTest, double_set_value) {
 
 TEST_F(MtxVectorTest, int_read_dense) {
     // reading data
-    EXPECT_EQ(vInt.readDataFrom(pathInt), 0);
+    ASSERT_EQ(vInt.readDataFrom(pathInt), 0);
 
     // check reading correctness
     ASSERT_FALSE(vInt.isEmpty()) << "it has to contain some data.\n";
@@ -162,7 +162,7 @@ TEST_F(MtxVectorTest, int_read_dense) {
 }
 
 TEST_F(MtxVectorTest, int_check_mtx_data) {
-    EXPECT_EQ(vInt.readDataFrom(pathInt), 0);
+    ASSERT_EQ(vInt.readDataFrom(pathInt), 0);
 
     // check index values
     auto li = vInt.getLi();
@@ -189,7 +189,7 @@ TEST_F(MtxVectorTest, int_check_mtx_data) {
 }
 
 TEST_F(MtxVectorTest, int_none_zeros_index_one_column) {
-    EXPECT_EQ(vInt.readDataFrom(pathInt), 0);
+    ASSERT_EQ(vInt.readDataFrom(pathInt), 0);
 
     // reading the whole column
     auto columnIndices = vInt.getNoneZeroRowIndices(1);
@@ -200,7 +200,7 @@ TEST_F(MtxVectorTest, int_none_zeros_index_one_column) {
 }
 
 TEST_F(MtxVectorTest, int_set_value) {
-    EXPECT_EQ(vInt.readDataFrom(pathInt), 0);
+    ASSERT_EQ(vInt.readDataFrom(pathInt), 0);
 
     const int v1 = -100, v2 = -200;
 
@@ -218,7 +218,7 @@ TEST_F(MtxVectorTest, int_set_value) {
 
 
 TEST_F(MtxVectorTest, sparse_int_read) {
-    EXPECT_EQ(vSparseInt.readDataFrom(pathSparseInt), 0);
+    ASSERT_EQ(vSparseInt.readDataFrom(pathSparseInt), 0);
 
     // check reading correctness
     ASSERT_FALSE(vSparseInt.isEmpty()) << "it has to contain some data.\n";
@@ -232,7 +232,7 @@ TEST_F(MtxVectorTest, sparse_int_read) {
 }
 
 TEST_F(MtxVectorTest, sparse_int_check_mtx_data) {
-    EXPECT_EQ(vSparseInt.readDataFrom(pathSparseInt), 0);
+    ASSERT_EQ(vSparseInt.readDataFrom(pathSparseInt), 0);
 
     // check index values
     auto li = vSparseInt.getLi();
@@ -259,7 +259,7 @@ TEST_F(MtxVectorTest, sparse_int_check_mtx_data) {
 }
 
 TEST_F(MtxVectorTest, sparse_int_none_zeros_index_one_column) {
-    EXPECT_EQ(vSparseInt.readDataFrom(pathSparseInt), 0);
+    ASSERT_EQ(vSparseInt.readDataFrom(pathSparseInt), 0);
 
     // reading the whole column
     auto columnIndices = vSparseInt.getNoneZeroRowIndices(1);
@@ -271,7 +271,7 @@ TEST_F(MtxVectorTest, sparse_int_none_zeros_index_one_column) {
 }
 
 TEST_F(MtxVectorTest, sparse_set_value) {
-    EXPECT_EQ(vSparseInt.readDataFrom(pathSparseInt), 0);
+    ASSERT_EQ(vSparseInt.readDataFrom(pathSparseInt), 0);
 
     const int v1 = -100, v2 = -200;
 
