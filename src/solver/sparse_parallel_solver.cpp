@@ -1,6 +1,6 @@
-#include "sparse_parallel_solver.h"
+#include "../../include/solver/sparse_parallel_solver.h"
 #include <omp.h>
-
+#include "../../include/utils/dfs.h"
 /*
  * Parallel Sparse Lower Triangular Solver Lx=b
  * L is stored in the compressed column storage format

@@ -1,5 +1,5 @@
-#include "../utils/dfs.h"
-#include "sparse_solver.h"
+#include "../../include/utils/dfs.h"
+#include "../../include/solver/sparse_solver.h"
 
 /*
  * Sparse Lower Triangular Solver Lx=b

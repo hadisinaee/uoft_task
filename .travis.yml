@@ -76,7 +76,6 @@ matrix:
 
 before_install:
   - eval "${MATRIX_EVAL}"
-  - export LD_LIBRARY_PATH=$(if [[ $C == "clang" ]]; then echo -n '/usr/local/clang/lib'; fi)
 
 before_script:
   # create a build folder for the out-of-source build
