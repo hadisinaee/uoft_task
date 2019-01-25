@@ -30,3 +30,4 @@ List of available switches
 - [x] add more solvers with support of parallelism.
     - [x] wavefront based parallelism.
 - [ ] try to setup Travis CI with this repo.
+- [ ] add a test coverage tool.
