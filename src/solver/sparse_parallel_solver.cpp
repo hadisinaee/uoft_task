@@ -1,6 +1,7 @@
 #include "../../include/solver/sparse_parallel_solver.h"
 #include <omp.h>
 #include "../../include/utils/dfs.h"
+
 /*
  * Parallel Sparse Lower Triangular Solver Lx=b
  * L is stored in the compressed column storage format
@@ -136,7 +137,7 @@ SolverResult SparseParallelSolver<M, V>::solve(M *L, V *b) {
 
 #pragma omp parallel for
         for (int k = j1; k < j2; k++) {
-            int j = (*sortedVerticesList)[k];
+            int j = (*sortedVerticesList)[k] - 1;
 
             // x[j] /= Lx[Lp[j]];
             b->setDataAt(j, b->getDataAt(j) / (*L)[Lp[j]]);

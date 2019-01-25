@@ -1,6 +1,6 @@
 #include "../../include/utils/dfs.h"
-#include "../../include/solver/sparse_solver.h"
-
+#include "../../include/solver/sparse_solver_test.h"
+#include <omp.h>
 /*
  * Sparse Lower Triangular Solver Lx=b
  * L is stored in the compressed column storage format
@@ -82,7 +82,7 @@ SolverResult SparseSolver<M, V>::solve(M *L, V *b) {
     double tdata = omp_get_wtime();
     int j = 0;
     for (int &jit : *g.getResultList()) {
-        j = jit;
+        j = jit - 1;
 
         // x[j] /= Lx[Lp[j]];
         b->setDataAt(j, b->getDataAt(j) / (*L)[Lp[j]]);

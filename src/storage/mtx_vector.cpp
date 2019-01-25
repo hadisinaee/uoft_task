@@ -114,30 +114,44 @@ int MtxVector<DataType>::save(std::string outputPath, std::string name) {
     else
         finalFilePath += ("/" + name);
 
-    // counting number of none_zeros in the final answer
-    int nz = 0;
-    for (int i = 0; i < this->getDimension()->getRows(); i++) {
-        if (this->raw_data[i] != 0)
-            nz++;
-    }
-
-    // stroing in the .mtx format
+    // storing in the .mtx format
     fout.open(finalFilePath);
 
     fout << "% Vector Type \n";
     fout << this->getDimension()->getRows() << " "
          << this->getDimension()->getColumns() << " ";
 
-    // if it is a dense vector, skip the nonzero part in the .mtx
-    if (nz != this->getDimension()->getRows()) {
-        fout << nz;
+    // counting number of none_zeros in the final answer
+    int nz = 0;
+    for (int j = 0; j < this->dim.getColumns(); j++) {
+        for (int p = this->Lp[j]; p < this->Lp[j + 1]; p++) {
+            if (this->Lx[p] != 0)
+                nz++;
+        }
     }
-    fout << "\n";
+    bool isDense = (nz == this->dim.getColumns() * this->dim.getRows());
+
+    if (isDense) {
+        fout << "\n";
+    } else {
+        fout << std::to_string(nz) + "\n";
+    }
 
     // write the nonzero entries of the vector to the file
-    for (int i = 0; i < this->getDimension()->getRows(); i++) {
-        if (this->raw_data[i] != 0) {
-            fout << i + 1 << " " << 1 << " " << this->raw_data[i] << std::endl;
+//    for (int i = 0; i < this->getDimension()->getRows(); i++) {
+//        if (this->raw_data[i] != 0) {
+//            fout << i + 1 << " " << 1 << " " << this->raw_data[i] << std::endl;
+//        }
+//    }
+    for (int j = 0; j < this->dim.getColumns(); j++) {
+        for (int p = this->Lp[j]; p < this->Lp[j + 1]; p++) {
+            if (this->Lx[p] != 0) {
+                if (!isDense)
+                    fout << this->Li[p] << " " << j + 1 << " " << std::setprecision(15) << this->Lx[p] << std::endl;
+                else
+                    fout << this->Li[p] << " " << std::setprecision(15) << this->Lx[p] << std::endl;
+
+            }
         }
     }
 

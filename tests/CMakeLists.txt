@@ -18,6 +18,5 @@ if (APPLE)
     add_definitions(-D__GLIBCXX__)
 endif (APPLE)
 
-
 add_executable(runTests main.cpp dfs_test.cpp mtx_matrix_test.cpp mtx_vector_test.cpp)
 target_link_libraries(runTests gtest gtest_main)
