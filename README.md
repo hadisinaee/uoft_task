@@ -25,7 +25,7 @@ List of available switches
         - [x] add tests for dense `mtx_matrix`
         - [x] add tests for sparse `mtx_vector`
         - [x] add tests for sparse `mtx_matrix`
-    - [ ] write tests for solver classes.
+    - [x] write tests for solver classes.
 - [ ] update readme with algorithms descriptions.
 - [x] add more solvers with support of parallelism.
     - [x] wavefront based parallelism.
