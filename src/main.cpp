@@ -1,11 +1,11 @@
 #include <iostream>
 #include <omp.h>
+#include <iomanip>
 
-#include "solver/simple_solver.cpp"
-#include "solver/sparse_parallel_solver.cpp"
-#include "solver/sparse_solver.cpp"
-#include "storage/mtx_matrix.cpp"
-#include "storage/mtx_vector.cpp"
+#include "src/solver/simple_solver.cpp"
+#include "src/solver/sparse_parallel_solver.cpp"
+#include "src/solver/sparse_solver.cpp"
+#include "src/storage/mtx_matrix.cpp"
 
 void showInfo(std::map<std::string, double> algorithmSteps, std::map<std::string, double> programSteps) {
 

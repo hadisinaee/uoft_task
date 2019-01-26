@@ -1,3 +1,6 @@
+#ifndef BASE_SPARSE_PARALLEL_SOLVER_H
+#define BASE_SPARSE_PARALLEL_SOLVER_H
+
 #include "../storage/mtx_matrix.h"
 #include "../storage/mtx_vector.h"
 #include "base_solver.h"
@@ -9,6 +12,8 @@
  */
 template <typename M, typename V> class SparseParallelSolver : Solver<M, V> {
 public:
-  // solves Lx=b for L of type M and x and b of type V
-  SolverResult solve(M *, V *);
+    // solves Lx=b for L of type M and x and b of type V
+    SolverResult solve(M *, V *);
 };
+
+#endif

@@ -1,8 +1,7 @@
 #include "../../include/storage/mtx_matrix.h"
-#include <algorithm>
 #include <fstream>
 #include <sstream>
-#include <list>
+#include <vector>
 
 template<typename DataType>
 int MtxMatrix<DataType>::readDataFrom(std::string filePath) {

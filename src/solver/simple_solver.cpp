@@ -1,4 +1,4 @@
-#include "../utils/dfs.cpp"
+#include "../../include/utils/dfs.h"
 #include "../../include/solver/simple_solver.h"
 #include <omp.h>
 

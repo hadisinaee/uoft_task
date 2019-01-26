@@ -1,6 +1,7 @@
+#include "../../include/solver/sparse_solver.h"
 #include "../../include/utils/dfs.h"
-#include "../../include/solver/sparse_solver_test.h"
 #include <omp.h>
+
 /*
  * Sparse Lower Triangular Solver Lx=b
  * L is stored in the compressed column storage format

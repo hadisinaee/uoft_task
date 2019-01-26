@@ -1,6 +1,6 @@
 #include "../../include/solver/sparse_parallel_solver.h"
-#include <omp.h>
 #include "../../include/utils/dfs.h"
+#include <omp.h>
 
 /*
  * Parallel Sparse Lower Triangular Solver Lx=b

@@ -6,6 +6,7 @@
 #include "../../src/solver/simple_solver.cpp"
 #include "../../src/storage/mtx_vector.cpp"
 
+
 class SimpleSolverTest : public ::testing::Test {
 protected:
     void SetUp() override {

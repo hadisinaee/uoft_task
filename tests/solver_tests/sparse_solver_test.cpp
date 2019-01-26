@@ -4,7 +4,6 @@
 
 #include <gtest/gtest.h>
 #include "../../src/solver/sparse_solver.cpp"
-#include "../../src/storage/mtx_vector.cpp"
 
 class SparseSolverTest : public ::testing::Test {
 protected:
