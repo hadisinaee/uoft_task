@@ -4,6 +4,7 @@ cmake_minimum_required(VERSION 3.9)
 project(gtests_uoft)
 
 set(CMAKE_CXX_STANDARD 14)
+
 file(COPY data DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 include_directories(lib/googletest-release-1.8.1/googletest/include)
@@ -18,5 +19,11 @@ if (APPLE)
     add_definitions(-D__GLIBCXX__)
 endif (APPLE)
 
-add_executable(runTests main_test.cpp dfs_test.cpp mtx_matrix_test.cpp mtx_vector_test.cpp main_test.cpp)
-target_link_libraries(runTests gtest gtest_main)
+add_executable(runUnitTests
+        dfs_test.cpp
+        mtx_matrix_test.cpp
+        mtx_vector_test.cpp
+
+        main_test.cpp
+        )
+target_link_libraries(runUnitTests gtest gtest_main)

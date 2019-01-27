@@ -3,6 +3,8 @@ project(uoft_task)
 
 set(CMAKE_CXX_STANDARD 14)
 
+enable_testing()
+
 # added -fopenmp
 find_package(OpenMP REQUIRED)
 if (OPENMP_FOUND)
@@ -23,8 +25,6 @@ include_directories(include/utils)
 
 
 add_executable(uoft_task
-        src/main.cpp
-
         src/solver/sparse_solver.cpp
         src/solver/simple_solver.cpp
         src/solver/sparse_parallel_solver.cpp
@@ -32,4 +32,9 @@ add_executable(uoft_task
         src/storage/mtx_vector.cpp
         src/storage/mtx_matrix.cpp
 
-        src/utils/dfs.cpp)
+        src/utils/dfs.cpp
+
+        src/main.cpp)
+
+add_test(NAME testSolver COMMAND testSolver WORKING_DIRECTORY tests/solver_tests)
+add_test(NAME runUnitTests COMMAND runUnitTests WORKING_DIRECTORY tests/)

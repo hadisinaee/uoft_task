@@ -5,6 +5,7 @@
 #include <gtest/gtest.h>
 #include "../../src/solver/simple_solver.cpp"
 #include "../../src/storage/mtx_vector.cpp"
+#include "../../src/storage/mtx_matrix.cpp"
 
 
 class SimpleSolverTest : public ::testing::Test {

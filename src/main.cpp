@@ -6,6 +6,7 @@
 #include "src/solver/sparse_parallel_solver.cpp"
 #include "src/solver/sparse_solver.cpp"
 #include "src/storage/mtx_matrix.cpp"
+#include "src/storage/mtx_vector.cpp"
 
 void showInfo(std::map<std::string, double> algorithmSteps, std::map<std::string, double> programSteps) {
 
