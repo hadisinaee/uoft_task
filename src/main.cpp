@@ -2,6 +2,7 @@
 #include <omp.h>
 #include <iomanip>
 
+#include "include/utils/colors.h"
 #include "src/solver/simple_solver.cpp"
 #include "src/solver/sparse_parallel_solver.cpp"
 #include "src/solver/sparse_solver.cpp"
@@ -27,12 +28,11 @@ void showInfo(std::map<std::string, double> algorithmSteps, std::map<std::string
 }
 
 void showHelp() {
-    std::string helpString = "List of available switches: \n"
-                             "\t-v vector_file_path, e.g: -v ./b.mtx\n"
-                             "\t-m matrix_file_path, e.g: -m ./L.mtx\n"
-                             "\t-o output_directory_path, e.g: -o ./\n"
-                             "\t-a algorithm_type[simple, sparse, par_sparse], e.g: -a par_sparse";
-    printf("%s\n", helpString.c_str());
+    printf("%s %s", FWHT("[uoft_task]"), "list of available switches:\n");
+    printf("\t%s %s\n", FWHT("[-v]"), FCYN("vector_file_path, e.g: -v ./b.mtx"));
+    printf("\t%s %s\n", FWHT("[-m]"), FCYN("matrix_file_path, e.g: -m ./L.mtx"));
+    printf("\t%s %s\n", FWHT("[-o]"), FCYN("output_directory_path, e.g: -o ./"));
+    printf("\t%s %s\n", FWHT("[-a]"), FCYN("algorithm_type[simple, sparse, par_sparse], e.g: -a par_sparse"));
 }
 
 int main(int argc, char **argv) {
@@ -53,25 +53,28 @@ int main(int argc, char **argv) {
             showHelp();
             return 0;
         } else {
-            printf("[WARNING]: switch %s isn't supported!\n", argv[i]);
+            printf("[%-10s] switch %s isn't supported!\n", FYEL("WARNING"), argv[i]);
         }
     }
 
     // checks for validity of the given paths
     if (vectorPath.length() == 0 || matrixPath.length() == 0) {
-        printf("[ERROR]: variables {vectorPath} or {matrixPath} is empty. Add them by -v and -m respectively.\n");
+        printf("[%-10s] variables {vectorPath} or {matrixPath} is empty. Add them by -v and -m respectively.\n",
+               FRED("ERROR"));
         return 1;
     }
 
     // detects the output path
     if (outputPath.length() == 0) {
-        printf("[WARNING]: the output path has not been specified. Choosing default path(./). Use -o to specify an output path.\n");
+        printf("[%-10s] the output path has not been specified. Choosing default path(./). Use -o to specify an output path.\n",
+               FYEL("WARNING"));
         outputPath = "./";
     }
 
     // detects the algorithm type
     if (algorithmType.length() == 0) {
-        printf("[WARNING]: The algorithm type has not been specified. Running simple algorithm. Use -a to specify an algorithm.\n");
+        printf("[%-10s] the algorithm type has not been specified. Running simple algorithm. Use -a to specify an algorithm.\n",
+               FYEL("WARNING"));
         algorithmType = "simple";
     }
 
@@ -79,7 +82,7 @@ int main(int argc, char **argv) {
     std::map<std::string, double> stepsTime;
 
     // reading vector data
-    printf("[READING]: reading vector data at (%s):\n", vectorPath.c_str());
+    printf("[%-10s] reading vector data at (%s):\n", FGRN("READING"), vectorPath.c_str());
     double vectorReadTime = omp_get_wtime();
     MtxVector<long double> v;
     v.readDataFrom(vectorPath);
@@ -87,12 +90,13 @@ int main(int argc, char **argv) {
     stepsTime.insert(std::pair<std::string, double>("read_vector", vectorReadTime));
 
     auto vDim = v.getDimension();
-    printf("[READ]: the vector has been read. (#rows= %d #cols= %d #nz= %d)\n", vDim->getRows(), vDim->getColumns(),
+    printf("[%-10s] the vector has been read. (#rows= %d #cols= %d #nz= %d)\n", FGRN("READ"), vDim->getRows(),
+           vDim->getColumns(),
            vDim->getNonZeros());
 
 
     // reading matrix data
-    printf("[READING]: reading matrix data at (%s):\n", matrixPath.c_str());
+    printf("[%-10s] reading matrix data at (%s):\n", FGRN("READING"), matrixPath.c_str());
     double matrixReadTime = omp_get_wtime();
     MtxMatrix<long double> m;
     m.readDataFrom(matrixPath);
@@ -100,12 +104,13 @@ int main(int argc, char **argv) {
     stepsTime.insert(std::pair<std::string, double>("read_matrix", matrixReadTime));
 
     auto mDim = m.getDimension();
-    printf("[READ]: the matrix has been read. (#rows= %d #cols= %d #nz= %d)\n", mDim->getRows(), mDim->getColumns(),
+    printf("[%-10s] the matrix has been read. (#rows= %d #cols= %d #nz= %d)\n", FGRN("READ"), mDim->getRows(),
+           mDim->getColumns(),
            mDim->getNonZeros());
 
 
     // solving the the system based on the given algorithm option
-    printf("[SOLVING]: solve the system using %s algorithm.\n", algorithmType.c_str());
+    printf("[%-10s] solve the system using %s algorithm.\n", FGRN("SOLVING"), algorithmType.c_str());
     double algoTime = 0;
     SolverResult result;
     if ("simple" == algorithmType) {
@@ -114,8 +119,10 @@ int main(int argc, char **argv) {
         result = s.solve(&m, &v);
         algoTime = omp_get_wtime() - algoTime;
 
-        printf("[SAVING]: successfully solved the system. Saving the result at %s%s.\n", outputPath.c_str(), "ss.mtx");
-        v.save(outputPath, "simple.mtx");
+        printf("[%-10s] successfully solved the system. Saving the result at %s%s.\n", FGRN("SAVING"),
+               outputPath.c_str(),
+               "simple_solver.mtx");
+        v.save(outputPath, "simple_solver.mtx");
 
     } else if ("sparse" == algorithmType) {
         SparseSolver<MtxMatrix<long double>, MtxVector<long double>> ss;
@@ -123,18 +130,20 @@ int main(int argc, char **argv) {
         result = ss.solve(&m, &v);
         algoTime = omp_get_wtime() - algoTime;
 
-        printf("[SAVING]: successfully solved the system. Saving the result at %s.%s.\n", outputPath.c_str(),
-               "sps.mtx");
-        v.save(outputPath, "sparse.mtx");
+        printf("[%-10s] successfully solved the system. Saving the result at %s%s.\n", FGRN("SAVING"),
+               outputPath.c_str(),
+               "sparse_solver.mtx");
+        v.save(outputPath, "sparse_solver.mtx");
     } else if ("par_sparse" == algorithmType) {
         SparseParallelSolver<MtxMatrix<long double>, MtxVector<long double>> ss;
         algoTime = omp_get_wtime();
         result = ss.solve(&m, &v);
         algoTime = omp_get_wtime() - algoTime;
 
-        printf("[SAVING]: successfully solved the system. Saving the result at %s.%s.\n", outputPath.c_str(),
-               "sps.mtx");
-        v.save(outputPath, "parallel_sparse.mtx");
+        printf("[%-10s] successfully solved the system. Saving the result at %s%s.\n", FGRN("SAVING"),
+               outputPath.c_str(),
+               "parallel_sparse_solver.mtx");
+        v.save(outputPath, "parallel_sparse_solver.mtx");
     } else {
         SimpleSolver<MtxMatrix<long double>, MtxVector<long double>> s;
         algoTime = omp_get_wtime();
@@ -143,8 +152,9 @@ int main(int argc, char **argv) {
 
         v.save(outputPath, "simple.mtx");
 
-        printf("[SAVED]: it successfully solved the system. Check %s for seeing the results.\n",
-               outputPath.c_str());
+        printf("[%-10s] successfully solved the system. Saving the result at %s%s.\n", FGRN("SAVING"),
+               outputPath.c_str(),
+               "simple_solver_default.mtx");
     }
     stepsTime.insert(std::pair<std::string, double>("algo_total", algoTime));
 
