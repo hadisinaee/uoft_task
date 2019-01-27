@@ -1,5 +1,5 @@
-#include "../utils/dfs.cpp"
-#include "simple_solver.h"
+#include "../../include/utils/dfs.h"
+#include "../../include/solver/simple_solver.h"
 #include <omp.h>
 
 // TODO: change direct access to Lp and Li. Make it available via a method

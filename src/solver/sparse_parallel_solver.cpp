@@ -1,4 +1,5 @@
-#include "sparse_parallel_solver.h"
+#include "../../include/solver/sparse_parallel_solver.h"
+#include "../../include/utils/dfs.h"
 #include <omp.h>
 
 /*
@@ -53,7 +54,7 @@ SolverResult SparseParallelSolver<M, V>::solve(M *L, V *b) {
     graphTime = omp_get_wtime() - graphTime;
     sr.setStepTime("graph_creating", graphTime);
 
-    // creating set B, a set of nonzeros of right hand side b
+    // creating set B, a set of none_zeros of right hand side b
     std::list<int> *BList = b->getNoneZeroRowIndices(1);
 
     // creating the reach set of B, X = reach_L(B)
@@ -136,7 +137,7 @@ SolverResult SparseParallelSolver<M, V>::solve(M *L, V *b) {
 
 #pragma omp parallel for
         for (int k = j1; k < j2; k++) {
-            int j = (*sortedVerticesList)[k];
+            int j = (*sortedVerticesList)[k] - 1;
 
             // x[j] /= Lx[Lp[j]];
             b->setDataAt(j, b->getDataAt(j) / (*L)[Lp[j]]);

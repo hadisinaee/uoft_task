@@ -1,5 +1,6 @@
-#include "../utils/dfs.h"
-#include "sparse_solver.h"
+#include "../../include/solver/sparse_solver.h"
+#include "../../include/utils/dfs.h"
+#include <omp.h>
 
 /*
  * Sparse Lower Triangular Solver Lx=b
@@ -54,7 +55,7 @@ SolverResult SparseSolver<M, V>::solve(M *L, V *b) {
     graphTime = omp_get_wtime() - graphTime;
     sr.setStepTime("graph_creation", graphTime);
 
-    // creating set B, a set of nonzeros of right hand side b
+    // creating set B, a set of none_zeros of right hand side b
     std::list<int> *BList = b->getNoneZeroRowIndices(1);
 
     double dfsTime = omp_get_wtime();
@@ -82,7 +83,7 @@ SolverResult SparseSolver<M, V>::solve(M *L, V *b) {
     double tdata = omp_get_wtime();
     int j = 0;
     for (int &jit : *g.getResultList()) {
-        j = jit;
+        j = jit - 1;
 
         // x[j] /= Lx[Lp[j]];
         b->setDataAt(j, b->getDataAt(j) / (*L)[Lp[j]]);

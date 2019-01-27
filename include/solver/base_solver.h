@@ -2,6 +2,8 @@
 #define BASE_SOLVER_H
 
 #include <map>
+#include <iostream>
+#include <string>
 
 /**
  * SolverResult is the return type of any solver containing information about

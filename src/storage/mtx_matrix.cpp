@@ -1,31 +1,66 @@
-#include "mtx_matrix.h"
-#include <algorithm>
+#include "../../include/storage/mtx_matrix.h"
 #include <fstream>
-#include <list>
+#include <sstream>
+#include <vector>
 
 template<typename DataType>
-void MtxMatrix<DataType>::readDataFrom(std::string filePath) {
+int MtxMatrix<DataType>::readDataFrom(std::string filePath) {
+    // checks that the given path is valid
+    if (filePath.empty()) {
+        return 1;
+    }
+
     // open the file
     std::ifstream fin(filePath);
+    if (!fin.is_open()) {
+        return 2;
+    }
+
     this->dim = Dimension();
+
 
     // ignore headers and comments
     while (fin.peek() == '%')
         fin.ignore(2048, '\n');
 
-    // reading information of the matrix from the first line
-    int rows, columns, nz;
-    fin >> rows >> columns >> nz;
+    // reading line by line
+    // the first line contains the information of the vector
+    std::string line;
+    std::getline(fin, line);
 
-    // setting matrix information in Dimension
-    this->dim.setRows(rows);
-    this->dim.setColumns(columns);
-    this->dim.setNonZeros(nz);
+    // Vector of string to save tokens
+    std::vector<std::string> tokens;
+
+    // stringstream class check1
+    std::stringstream check1(line);
+
+    std::string intermediate;
+
+    // Tokenizing w.r.t. space ' '
+    while (getline(check1, intermediate, ' ')) {
+        tokens.push_back(intermediate);
+    }
+
+    // checks for sparsity of the vector
+    // 3 parts if it is a sparse vector with nonzero part
+    // 2 parts if it is a dense vector
+    this->dim.setRows(std::stoi(tokens[0]));
+    this->dim.setColumns(std::stoi(tokens[1]));
+    if (tokens.size() == 3) {
+        this->dim.setNonZeros(std::stoi(tokens[2]));
+    } else {
+        this->dim.setNonZeros(this->dim.getRows() * this->dim.getColumns());
+    }
+
+    // reading information of the matrix from the first line
+    auto columns = this->getDimension()->getColumns(),
+            nz = this->getDimension()->getNonZeros();
+
 
     // initializing Lx(value array), Lp(pointer array), Li(indices array)
     this->Lx = new DataType[nz];
     for (int i = 0; i < nz; i++) {
-        this->Lx[i] = 0.;
+        this->Lx[i] = (DataType) 0;
     }
     this->Lp = new int[columns + 1];
     this->Li = new int[nz];
@@ -45,15 +80,9 @@ void MtxMatrix<DataType>::readDataFrom(std::string filePath) {
         }
     }
 
-//    std::cout << "printing columns of L" << std::endl;
-//    for (int j = 0; j < this->getDimension()->getColumns(); ++j) {
-//        printf("Column(%d) starts at index %d\n", j, this->Lp[j]);
-//        for (int p = this->Lp[j]; p < this->Lp[j + 1]; ++p) {
-//            printf("Lx[%d, %d] = %Lf \n", p, j, this->Lx[p]);
-//        }
-//    }
-//    std::cout << std::endl;
     fin.close();
+
+    return 0;
 }
 
 template<typename DataType>
@@ -62,7 +91,8 @@ Dimension *MtxMatrix<DataType>::getDimension() {
 }
 
 template<typename DataType>
-void MtxMatrix<DataType>::save(std::string path, std::string name) {
+int MtxMatrix<DataType>::save(std::string path, std::string name) {
+    return -1;
 }
 
 template<typename DataType>
@@ -89,12 +119,20 @@ std::list<DataType> *MtxMatrix<DataType>::getColumn(const int idx) {
 
 template<typename DataType>
 DataType MtxMatrix<DataType>::getDataAt(int idx) {
-    return this->Lx[idx];
+    if (idx >= 0 && idx < this->dim.getNonZeros())
+        return this->Lx[idx];
+    else
+        return 0.0;
 }
 
 template<typename DataType>
-void MtxMatrix<DataType>::setDataAt(int idx, DataType value) {
-    this->Lx[idx] = value;
+int MtxMatrix<DataType>::setDataAt(int idx, DataType value) {
+    if (idx >= 0 && idx < this->dim.getNonZeros())
+        this->Lx[idx] = value;
+    else
+        return 1;
+    return 0;
+
 }
 
 template<typename DataType>
@@ -116,7 +154,10 @@ std::list<int> *MtxMatrix<DataType>::getNoneZeroRowIndices(const int idx) {
 
 template<typename DataType>
 DataType MtxMatrix<DataType>::operator[](int idx) {
-    return this->Lx[idx];
+    if (idx >= 0 && idx < this->dim.getNonZeros())
+        return this->Lx[idx];
+    else
+        return 0.0;
 }
 
 template<typename DataType>
